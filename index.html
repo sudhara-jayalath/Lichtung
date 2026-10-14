@@ -1,0 +1,2021 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lichtung</title>
+<meta name="description" content="A quiet place to write essays, articles, fragments, visual essays and posters.">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lichtung">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f5f6f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141816" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* base: what the Claude viewer used to provide */
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: a quiet library (masthead, category tabs, entry list + provocation aside) and a single centred writing column with a floating format bar. */
+:root {
+  --bg: #f5f6f3;
+  --surface: #fbfbf9;
+  --ink: #1b201d;
+  --muted: #69716b;
+  --faint: #a3aaa4;
+  --rule: #dde1dc;
+  --accent: #2f5444;
+  --accent-soft: #e3ebe6;
+  --danger: #9b3b2e;
+  --warn: #a8741a;
+  --shadow: 0 1px 2px rgba(27,32,29,.06), 0 12px 32px -12px rgba(27,32,29,.18);
+
+  --f-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --f-read: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --f-ui: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-write: var(--f-read);
+
+  --step--1: .8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.625rem;
+  --step-3: 2.25rem;
+  --step-4: clamp(2.6rem, 6vw, 4.25rem);
+  --ease: cubic-bezier(.2,.7,.2,1);
+  /* the poster sheet is paper in both themes */
+  --sheet: #fdfdfb;
+  --sheet-ink: #1b201d;
+  --sheet-line: rgba(47,84,68,.13);
+  --sheet-sel: #2f5444;
+  --sheet-faint: #a3aaa4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141816; --surface: #1a1f1c; --ink: #e6e9e5; --muted: #9aa39c; --faint: #5f6862;
+    --rule: #2b322e; --accent: #9cc4ae; --accent-soft: #23302a; --danger: #e08a7b; --warn: #ddb35f;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -14px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141816; --surface: #1a1f1c; --ink: #e6e9e5; --muted: #9aa39c; --faint: #5f6862;
+  --rule: #2b322e; --accent: #9cc4ae; --accent-soft: #23302a; --danger: #e08a7b; --warn: #ddb35f;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -14px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-ui); font-size: 15px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+::selection { background: var(--accent-soft); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 48px); }
+.label {
+  font-family: var(--f-ui); font-size: .6875rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: .5em;
+  font-size: var(--step--1); font-weight: 500; letter-spacing: .02em;
+  padding: .55em 1.1em; border-radius: 999px; border: 1px solid var(--rule);
+  transition: border-color .2s, background .2s, color .2s;
+}
+.btn:hover { border-color: var(--ink); }
+.btn.solid { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.solid:hover { background: var(--accent); border-color: var(--accent); }
+.btn.quiet { border-color: transparent; color: var(--muted); }
+.btn.quiet:hover { color: var(--ink); border-color: var(--rule); }
+.btn.quiet[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); }
+
+/* ---------- Library ---------- */
+.mast { padding-block: clamp(28px, 6vw, 64px) 18px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px; }
+.wordmark {
+  font-family: var(--f-display); font-weight: 300; font-style: italic;
+  font-size: var(--step-4); line-height: .9; letter-spacing: -.01em; margin: 0;
+}
+.wordmark span { font-style: normal; font-weight: 400; }
+.mast p { margin: 10px 0 0; color: var(--muted); font-family: var(--f-read); font-size: var(--step-1); font-weight: 300; }
+.new-wrap { position: relative; }
+.chooser {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: min(320px, 86vw);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow);
+  padding: 8px; display: grid; gap: 2px;
+}
+.chooser button { text-align: left; padding: 12px 14px; border-radius: 9px; display: grid; gap: 2px; }
+.chooser button:hover { background: var(--accent-soft); }
+.chooser b { font-family: var(--f-read); font-weight: 400; font-size: var(--step-1); }
+.chooser small { color: var(--muted); font-size: var(--step--1); }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 4px 22px; border-bottom: 1px solid var(--rule); padding-block: 14px; margin-bottom: 8px; }
+.tab { font-size: var(--step--1); font-weight: 500; color: var(--muted); padding-block: 4px; position: relative; letter-spacing: .02em; }
+.tab sup { font-size: .7em; margin-left: 3px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.tab[aria-selected="true"] { color: var(--ink); }
+.tab[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -15px; height: 1px; background: var(--ink); }
+
+.lib { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: clamp(24px, 5vw, 64px); padding-block: 12px 80px; }
+@media (max-width: 860px) { .lib { grid-template-columns: minmax(0,1fr); } }
+
+.entries { display: grid; }
+.entry {
+  display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 20px; align-items: start;
+  padding-block: 26px; border-bottom: 1px solid var(--rule); text-align: left; width: 100%;
+  animation: rise .6s var(--ease) both;
+}
+.entry:hover .e-title { color: var(--accent); }
+.e-body { min-width: 0; display: grid; gap: 6px; }
+.e-title { font-family: var(--f-read); font-weight: 400; font-size: var(--step-2); line-height: 1.15; margin: 0; text-wrap: balance; transition: color .25s; }
+.e-title.untitled { color: var(--faint); font-style: italic; }
+.e-excerpt { font-family: var(--f-read); font-weight: 300; color: var(--muted); font-size: 1.0625rem; margin: 0; max-width: 60ch; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.e-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: var(--step--1); color: var(--faint); font-variant-numeric: tabular-nums; }
+.thumb { width: 112px; aspect-ratio: 4/5; object-fit: cover; border-radius: 3px; background: var(--rule); max-width: 100%; }
+@media (max-width: 520px) { .thumb { width: 76px; } }
+.status { display: inline-flex; align-items: center; gap: 6px; }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1px solid currentColor; }
+.status.s-draft::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.status.s-ready { color: var(--accent); }
+.status.s-ready::before { background: currentColor; }
+@keyframes rise { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.empty { padding-block: 48px; display: grid; gap: 18px; max-width: 52ch; }
+.empty h2 { font-family: var(--f-read); font-weight: 300; font-size: var(--step-3); line-height: 1.1; margin: 0; text-wrap: balance; }
+.empty p { color: var(--muted); margin: 0; font-family: var(--f-read); font-size: 1.0625rem; }
+.empty .row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.aside { display: grid; gap: 28px; align-content: start; }
+.card-prov {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; padding: 22px 22px 18px;
+  display: grid; gap: 14px; position: relative; overflow: hidden;
+}
+.prov-text { font-family: var(--f-display); font-size: 1.6rem; line-height: 1.15; font-weight: 400; margin: 0; min-height: 3.5em; text-wrap: balance; transition: opacity .3s, transform .3s var(--ease); }
+.prov-text.swap { opacity: 0; transform: translateY(6px); }
+.prov-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.tally { display: grid; gap: 10px; }
+.tally-row { display: flex; justify-content: space-between; font-size: var(--step--1); color: var(--muted); border-bottom: 1px dotted var(--rule); padding-bottom: 6px; font-variant-numeric: tabular-nums; }
+.tally-row b { color: var(--ink); font-weight: 500; }
+.store-note { font-size: .75rem; color: var(--faint); }
+
+/* ---------- Editor ---------- */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+  background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule); transition: opacity .4s;
+}
+.bar-in { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 10px; }
+.bar .spacer { flex: 1; }
+.sel {
+  appearance: none; border: 1px solid var(--rule); border-radius: 999px; background: transparent;
+  padding: .4em 1.9em .4em .9em; font-size: var(--step--1); font-weight: 500;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 13px) 55%, calc(100% - 9px) 55%; background-size: 4px 4px; background-repeat: no-repeat;
+}
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 2px; }
+.seg button { padding: .25em .7em; border-radius: 999px; font-size: .95rem; color: var(--muted); line-height: 1.3; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg .f1 { font-family: var(--f-read); }
+.seg .f2 { font-family: var(--f-display); font-size: 1.1rem; }
+.seg .f3 { font-family: var(--f-ui); font-size: .85rem; }
+.icon-btn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); border: 1px solid transparent; }
+.icon-btn:hover, .icon-btn[aria-pressed="true"] { color: var(--ink); border-color: var(--rule); }
+.icon-btn svg { width: 17px; height: 17px; }
+.saved { font-size: .75rem; color: var(--faint); min-width: 4.5em; text-align: right; }
+
+.page { max-width: 700px; margin: 0 auto; padding: clamp(36px, 8vw, 88px) clamp(16px, 4vw, 24px) 160px; }
+.page .label { display: block; margin-bottom: 18px; }
+[contenteditable] { outline: none; }
+[contenteditable][data-ph]:empty::before { content: attr(data-ph); color: var(--faint); pointer-events: none; }
+.t-title { font-family: var(--f-write); font-weight: 400; font-size: var(--step-4); line-height: 1.04; letter-spacing: -.01em; margin: 0 0 18px; text-wrap: balance; }
+.t-stand { font-family: var(--f-write); font-weight: 300; font-style: italic; font-size: var(--step-1); line-height: 1.45; color: var(--muted); margin: 0 0 40px; }
+.f-ui .t-stand { font-style: normal; }
+.f-display .t-title { font-weight: 400; font-style: italic; }
+
+.blocks { display: grid; }
+.blk { position: relative; }
+.txt { font-family: var(--f-write); font-size: 1.1875rem; line-height: 1.72; font-weight: 400; min-height: 1.7em; }
+.f-display .txt { font-size: 1.375rem; line-height: 1.6; }
+.f-ui .txt { font-size: 1.0625rem; line-height: 1.7; }
+.txt p { margin: 0 0 1.05em; }
+.txt h2 { font-family: var(--f-write); font-weight: 500; font-size: var(--step-2); line-height: 1.2; margin: 1.6em 0 .6em; }
+.txt blockquote { margin: 1.4em 0; padding-left: 1.1em; border-left: 2px solid var(--accent); font-style: italic; color: var(--muted); }
+.txt a { color: var(--accent); }
+.frag .txt { font-size: 1.4rem; line-height: 1.6; }
+
+.divider { text-align: center; color: var(--faint); letter-spacing: 1.2em; padding-block: 18px 26px; font-family: var(--f-display); font-size: 1.3rem; user-select: none; }
+
+.fig { margin: 18px 0 30px; display: grid; gap: 10px; }
+.fig img { display: block; width: 100%; height: auto; border-radius: 2px; }
+.fig.wide { margin-inline: calc(min(0px, (700px - min(1000px, 100vw - 32px)) / 2)); }
+.fig.full { margin-inline: calc(50% - 50vw + 16px); }
+@media (min-width: 760px) { .fig.full { margin-inline: calc(50% - 50vw + 32px); } }
+.fig figcaption { font-size: var(--step--1); color: var(--muted); font-family: var(--f-ui); max-width: 60ch; }
+.drop {
+  border: 1px dashed var(--faint); border-radius: 12px; padding: 36px 20px; text-align: center; color: var(--muted);
+  display: grid; gap: 8px; justify-items: center; transition: background .2s, border-color .2s;
+}
+.drop.over { background: var(--accent-soft); border-color: var(--accent); }
+.drop input { display: none; }
+.blk-tools {
+  position: absolute; top: 6px; right: 6px; display: flex; gap: 4px; opacity: 0; transition: opacity .2s;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 3px; box-shadow: var(--shadow);
+}
+.blk:hover .blk-tools, .blk:focus-within .blk-tools { opacity: 1; }
+.blk-tools button { font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 4px 9px; border-radius: 999px; }
+.blk-tools button:hover, .blk-tools button[aria-pressed="true"] { color: var(--ink); background: var(--accent-soft); }
+.txt-blk .blk-tools { top: -14px; }
+.divider-blk .blk-tools { top: 8px; }
+
+.ins { display: flex; justify-content: center; height: 22px; align-items: center; position: relative; }
+.ins-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--rule); color: var(--faint); display: grid; place-items: center; font-size: 15px; line-height: 1; opacity: .0; transition: opacity .2s, color .2s, border-color .2s; background: var(--bg); }
+.blocks:hover .ins-btn { opacity: .35; }
+.ins:hover .ins-btn, .ins-btn:focus-visible, .ins.open .ins-btn { opacity: 1; }
+.ins-btn:hover { color: var(--ink); border-color: var(--ink); }
+.ins-menu { position: absolute; top: 26px; z-index: 10; display: flex; gap: 2px; background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 3px; box-shadow: var(--shadow); }
+.ins-menu button { font-size: var(--step--1); padding: 5px 12px; border-radius: 999px; color: var(--muted); }
+.ins-menu button:hover { background: var(--accent-soft); color: var(--ink); }
+@media (hover: none) { .ins-btn { opacity: .7; } .blk-tools { opacity: 1; position: static; justify-self: end; margin-bottom: 6px; box-shadow: none; } .txt-blk .blk-tools { display: none; } }
+
+.fmt {
+  position: fixed; z-index: 50; display: flex; gap: 2px; padding: 4px; border-radius: 10px;
+  background: var(--ink); color: var(--bg); box-shadow: var(--shadow); transform: translate(-50%, -100%);
+}
+.fmt button { min-width: 32px; height: 30px; border-radius: 7px; padding: 0 8px; font-size: .9rem; }
+.fmt button:hover { background: color-mix(in srgb, var(--bg) 18%, transparent); }
+
+.foot {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px;
+  font-size: .75rem; color: var(--faint); font-variant-numeric: tabular-nums;
+  background: linear-gradient(transparent, var(--bg) 45%); pointer-events: none; transition: opacity .4s;
+}
+.foot b { color: var(--muted); font-weight: 500; }
+
+/* focus mode */
+.focus .bar, .focus .foot { opacity: .08; }
+.focus .bar:hover, .focus .foot:hover { opacity: 1; }
+.focus .page .txt > *, .focus .page .fig, .focus .t-stand, .focus .divider { transition: opacity .35s; opacity: .22; }
+.focus .page .txt > .cur, .focus .page .fig:hover { opacity: 1; }
+.focus .ins { visibility: hidden; }
+
+/* drawer */
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 100vw); z-index: 60;
+  background: var(--surface); border-left: 1px solid var(--rule); box-shadow: var(--shadow);
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 22px 22px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 18px;
+  transform: translateX(100%); transition: transform .45s var(--ease); visibility: hidden;
+}
+.drawer.open { transform: none; visibility: visible; }
+.drawer h3 { margin: 0; font-family: var(--f-read); font-weight: 400; font-size: var(--step-2); }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; }
+.ref-form { display: grid; gap: 8px; }
+.field { width: 100%; border: 1px solid var(--rule); background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: var(--step--1); }
+.refs { list-style: none; margin: 0; padding: 0; overflow: auto; display: grid; gap: 2px; align-content: start; }
+.refs li { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.refs a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: var(--step--1); overflow-wrap: anywhere; }
+.refs a:hover { color: var(--accent); }
+.refs small { display: block; color: var(--muted); font-size: .75rem; }
+.refs .src { font-size: .625rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.drawer-foot { font-size: .75rem; color: var(--muted); display: grid; gap: 8px; }
+.drawer-foot .row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* popovers */
+.pop {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 40; width: min(300px, 90vw);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); padding: 8px; display: grid; gap: 2px;
+}
+.pop button { text-align: left; padding: 10px 12px; border-radius: 8px; font-size: var(--step--1); }
+.pop button:hover { background: var(--accent-soft); }
+.pop .danger { color: var(--danger); }
+.pop hr { border: 0; border-top: 1px solid var(--rule); margin: 4px 0; }
+.pop p { margin: 4px 12px 8px; font-size: var(--step--1); color: var(--muted); }
+.rel { position: relative; }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(52px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 999px; font-size: var(--step--1); z-index: 80;
+  box-shadow: var(--shadow); max-width: calc(100vw - 32px);
+}
+.prov-float { position: absolute; right: 0; top: calc(100% + 8px); z-index: 40; width: min(340px, 90vw); }
+
+/* ---------- Poster ---------- */
+.page.poster-mode { max-width: 1180px; }
+.page.poster-mode .t-title { font-size: var(--step-3); }
+.page.poster-mode .t-stand { margin-bottom: 22px; }
+.pbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-block: 12px; border-top: 1px solid var(--rule); margin-bottom: 18px; }
+.pbar .grp { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pbar .sep { width: 1px; height: 22px; background: var(--rule); }
+.pbar .seg button { font-size: var(--step--1); font-weight: 500; padding: .3em .8em; }
+.pbar .ori { display: inline-block; border: 1.5px solid currentColor; border-radius: 1px; vertical-align: -1px; }
+.pbar .ori.p { width: 8px; height: 11px; } .pbar .ori.l { width: 11px; height: 8px; }
+.zoom-val { font-size: .75rem; color: var(--muted); min-width: 3.4em; text-align: center; font-variant-numeric: tabular-nums; }
+.stage {
+  overflow: auto; padding: 34px 24px 24px; border-radius: 14px;
+  background: color-mix(in srgb, var(--rule) 50%, var(--bg));
+  touch-action: pan-x pan-y;
+}
+.sheet { position: relative; margin: 0 auto; background: var(--sheet); color: var(--sheet-ink); box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 22px 50px -22px rgba(0,0,0,.4); }
+.sheet.grid {
+  background-image: linear-gradient(to right, var(--sheet-line) 1px, transparent 1px), linear-gradient(to bottom, var(--sheet-line) 1px, transparent 1px);
+  background-size: var(--g) var(--g);
+}
+.sheet-tag { position: absolute; left: 0; top: -22px; font-size: .6875rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sheet-hint { position: absolute; inset: 0; display: grid; place-items: center; padding: 12%; text-align: center; color: var(--sheet-faint); font-family: var(--f-display); font-style: italic; font-size: 1.4rem; pointer-events: none; }
+.pi { position: absolute; touch-action: none; cursor: grab; }
+.pi:active { cursor: grabbing; }
+.pi.sel { outline: 1px solid var(--sheet-sel); outline-offset: 3px; }
+.pt { line-height: 1.15; white-space: pre-wrap; overflow-wrap: break-word; min-height: 1.15em; outline: none; }
+.pt:empty::before { content: "Text"; color: var(--sheet-faint); }
+.pt[contenteditable="true"] { cursor: text; }
+.pi.editing { outline: 1px dashed var(--sheet-sel); outline-offset: 3px; cursor: text; }
+.ff-read { font-family: var(--f-read); font-weight: 400; }
+.ff-display { font-family: var(--f-display); font-weight: 400; }
+.ff-ui { font-family: var(--f-ui); font-weight: 500; }
+.pi img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.ph { position: absolute; right: -8px; bottom: -8px; width: 13px; height: 13px; background: var(--sheet); border: 1.5px solid var(--sheet-sel); border-radius: 2px; cursor: nwse-resize; display: none; touch-action: none; }
+.pi.sel .ph { display: block; }
+.pi.editing .ph { display: none; }
+.poster-note { font-size: .75rem; color: var(--faint); margin: 12px 0 0; }
+.mini { width: 112px; max-width: 100%; pointer-events: none; overflow: hidden; }
+.mini .sheet { margin: 0; box-shadow: inset 0 0 0 1px var(--rule); overflow: hidden; transform-origin: 0 0; }
+@media (max-width: 520px) { .mini { width: 76px; } .mini .sheet { transform: scale(.678572); } }
+
+/* ---------- Sync & backup ---------- */
+.store-note { display: flex; align-items: flex-start; gap: 9px; text-align: left; font-size: .75rem; line-height: 1.5; color: var(--muted); }
+.store-note::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; margin-top: .45em; background: var(--faint); }
+.store-note[data-tone="ok"]::before { background: var(--accent); }
+.store-note[data-tone="busy"]::before { background: var(--accent); animation: pulse .9s ease-in-out infinite alternate; }
+.store-note[data-tone="warn"]::before { background: var(--warn); }
+.store-note[data-tone="bad"]::before { background: var(--danger); }
+.store-note[data-tone="bad"] { color: var(--danger); }
+.store-note:hover span { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+@keyframes pulse { from { opacity: .25; } to { opacity: 1; } }
+#settings { grid-template-rows: auto minmax(0, 1fr); width: min(430px, 100vw); z-index: 70; }
+.set-body { overflow: auto; display: grid; gap: 22px; align-content: start; padding-bottom: 28px; margin-inline: -4px; padding-inline: 4px; }
+.set-body section { display: grid; gap: 10px; }
+.set-intro { margin: 0; font-family: var(--f-read); font-size: 1.125rem; line-height: 1.5; }
+.set-p { margin: 0; color: var(--muted); font-size: var(--step--1); line-height: 1.55; }
+.set-status { margin: 0; font-size: var(--step--1); line-height: 1.5; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); }
+.set-status[data-tone="bad"] { background: color-mix(in srgb, var(--danger) 14%, var(--surface)); }
+.set-status[data-tone="warn"] { background: color-mix(in srgb, var(--warn) 16%, var(--surface)); }
+.lab { font-size: .75rem; font-weight: 600; letter-spacing: .03em; color: var(--muted); margin-top: 4px; }
+.set-err { margin: 0; color: var(--danger); font-size: var(--step--1); line-height: 1.5; }
+.how { font-size: var(--step--1); color: var(--muted); line-height: 1.55; }
+.how summary { cursor: pointer; color: var(--ink); font-weight: 500; }
+.how ol { padding-left: 1.25em; margin: 10px 0 0; display: grid; gap: 7px; }
+.how a, .set-p a { color: var(--accent); }
+.how b { color: var(--ink); font-weight: 500; }
+.set-body hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.set-body .row { display: flex; flex-wrap: wrap; gap: 8px; }
+.pub-warn { display: grid; gap: 10px; padding: 12px; border-radius: 10px; background: color-mix(in srgb, var(--danger) 12%, var(--surface)); font-size: var(--step--1); line-height: 1.5; }
+.btn:disabled { opacity: .55; cursor: default; }
+img[data-asset]:not([src]) { opacity: 0; }
+.fig img[data-asset]:not([src]) { min-height: 160px; }
+.pi.imgitem { background: color-mix(in srgb, var(--sheet-faint) 22%, transparent); }
+
+/* ---------- Phone ---------- */
+.only-touch { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .only-touch { display: inline; } .only-mouse { display: none; }
+  /* iOS zooms the page when a control under 16px is focused */
+  .sel, .field, select, input { font-size: 16px !important; }
+  .ph { width: 24px; height: 24px; right: -12px; bottom: -12px; border-radius: 50%; }
+}
+@media (max-width: 600px) {
+  .mast { padding-block: 28px 8px; }
+  .wordmark { font-size: 2.75rem; }
+  .mast p { font-size: 1.0625rem; }
+  .chooser { left: 0; right: auto; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 22px; padding-block: 0; margin-inline: -16px; padding-inline: 16px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; padding-block: 14px 12px; }
+  .tab[aria-selected="true"]::after { bottom: 0; }
+  .entry { padding-block: 20px; gap: 14px; }
+  .e-title { font-size: 1.375rem; }
+  .e-excerpt { font-size: 1rem; }
+  .lib { padding-block: 4px 48px; gap: 36px; }
+
+  /* editor bar scrolls away with the page: steadier with the phone keyboard */
+  .bar { position: static; backdrop-filter: none; background: var(--bg); }
+  .bar-in { position: relative; gap: 8px 6px; padding-block: 8px; }
+  .bar-in > .spacer { flex-basis: 100%; height: 0; }
+  #backBtn { padding-inline: .4em .7em; }
+  .sel { padding-block: .3em; }
+  .seg button { padding: .2em .55em; }
+  .bar .rel { position: static; }
+  .pop, .prov-float { left: 12px; right: 12px; width: auto; top: calc(100% + 4px); }
+  .saved { margin-left: auto; min-width: 0; }
+  .page { padding: 28px 16px 40px; }
+  .t-title { font-size: 2.375rem; margin-bottom: 12px; }
+  .t-stand { font-size: 1.125rem; margin-bottom: 28px; }
+  .txt { font-size: 1.125rem; line-height: 1.68; }
+  .frag .txt, .f-display .txt { font-size: 1.25rem; }
+  .foot { position: static; background: none; padding-block: 0 calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .focus .bar, .focus .foot { opacity: .35; }
+
+  /* poster */
+  .pbar { gap: 8px; }
+  .pbar .sep { display: none; }
+  .pbar .btn { padding: .5em .9em; }
+  .stage { padding: 30px 12px 14px; margin-inline: -8px; }
+  .page.poster-mode .t-title { font-size: 1.875rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <!-- LIBRARY -->
+  <section id="library">
+    <div class="wrap">
+      <header class="mast">
+        <div>
+          <h1 class="wordmark">Lichtung<span>.</span></h1>
+          <p>Essays, articles, fragments, visual essays and posters, before they go to the blog.</p>
+        </div>
+        <div class="new-wrap">
+          <button class="btn solid" id="newBtn" aria-expanded="false" aria-haspopup="true">New piece <span aria-hidden="true">+</span></button>
+          <div class="chooser" id="chooser" hidden></div>
+        </div>
+      </header>
+      <nav class="tabs" id="tabs" role="tablist" aria-label="Categories"></nav>
+      <div class="lib">
+        <div class="entries" id="entries" aria-live="polite"></div>
+        <aside class="aside">
+          <div class="card-prov">
+            <span class="label">Provocation</span>
+            <p class="prov-text" id="provText"></p>
+            <div class="prov-actions">
+              <button class="btn" id="provWrite">Write from this</button>
+              <button class="btn quiet" id="provNext">Draw another</button>
+            </div>
+          </div>
+          <div class="tally" id="tally"></div>
+          <button class="store-note" id="storeNote" type="button"><span></span></button>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITOR -->
+  <section id="editor" hidden>
+    <div class="bar">
+      <div class="wrap bar-in">
+        <button class="btn quiet" id="backBtn">← Library</button>
+        <select class="sel" id="catSel" aria-label="Category"></select>
+        <select class="sel" id="statusSel" aria-label="Status">
+          <option value="seed">Seed</option>
+          <option value="draft">Draft</option>
+          <option value="ready">Ready</option>
+        </select>
+        <span class="spacer"></span>
+        <div class="seg" id="fontSeg" role="group" aria-label="Typeface">
+          <button class="f1" data-font="read" title="Newsreader">Aa</button>
+          <button class="f2" data-font="display" title="Cormorant">Aa</button>
+          <button class="f3" data-font="ui" title="Hanken Grotesk">Aa</button>
+        </div>
+        <div class="rel">
+          <button class="icon-btn" id="provBtn" title="Provocation" aria-label="Provocation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+          </button>
+          <div class="prov-float" id="provFloat" hidden>
+            <div class="card-prov">
+              <span class="label">Provocation</span>
+              <p class="prov-text" id="provText2"></p>
+              <div class="prov-actions">
+                <button class="btn" id="provInsert">Add as a note</button>
+                <button class="btn quiet" id="provNext2">Draw another</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="icon-btn" id="focusBtn" title="Focus mode" aria-label="Focus mode" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5" stroke-dasharray="2 3"/></svg>
+        </button>
+        <button class="icon-btn" id="refsBtn" title="References" aria-label="References" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="4" width="7" height="7" rx="1"/><rect x="13.5" y="4" width="7" height="10" rx="1"/><rect x="3.5" y="14" width="7" height="6" rx="1"/><path d="M14 18h6"/></svg>
+        </button>
+        <div class="rel">
+          <button class="icon-btn" id="moreBtn" title="More" aria-label="More">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+          </button>
+          <div class="pop" id="morePop" hidden>
+            <button id="copyMd">Copy as Markdown</button>
+            <button id="dlMd">Download Markdown file</button>
+            <button id="dlPng" hidden>Download poster as image</button>
+            <hr>
+            <button class="danger" id="delAsk">Delete this piece</button>
+            <div id="delConfirm" hidden>
+              <p>Delete it for good? This can't be undone.</p>
+              <button class="danger" id="delYes">Yes, delete</button>
+              <button id="delNo">Keep it</button>
+            </div>
+          </div>
+        </div>
+        <span class="saved" id="saved"></span>
+      </div>
+    </div>
+
+    <article class="page" id="page">
+      <span class="label" id="pageCat"></span>
+      <h1 class="t-title" id="tTitle" contenteditable="true" data-ph="Title" spellcheck="true"></h1>
+      <p class="t-stand" id="tStand" contenteditable="true" data-ph="A line that opens the door…"></p>
+      <div class="blocks" id="blocks"></div>
+      <div id="posterView" hidden>
+        <div class="pbar">
+          <div class="grp">
+            <div class="seg" role="group" aria-label="Sheet size">
+              <button data-pf="A1">A1</button><button data-pf="A0">A0</button>
+            </div>
+            <div class="seg" role="group" aria-label="Orientation">
+              <button data-po="portrait" title="Portrait" aria-label="Portrait"><span class="ori p"></span></button><button data-po="landscape" title="Landscape" aria-label="Landscape"><span class="ori l"></span></button>
+            </div>
+          </div>
+          <span class="sep"></span>
+          <div class="grp">
+            <button class="btn" id="addText">+ Text</button>
+            <label class="btn" for="addImg" style="cursor:pointer">+ Image</label>
+            <input type="file" accept="image/*" id="addImg" hidden>
+            <button class="btn quiet" id="gridBtn" aria-pressed="false">Grid</button>
+          </div>
+          <span class="spacer" style="flex:1"></span>
+          <div class="grp" id="selGrp" hidden>
+            <span class="txtonly grp">
+              <button class="btn quiet" data-ps="smaller" title="Smaller text">A−</button>
+              <button class="btn quiet" data-ps="larger" title="Larger text">A+</button>
+              <div class="seg" role="group" aria-label="Typeface">
+                <button class="f1" data-pff="read" title="Newsreader">Aa</button>
+                <button class="f2" data-pff="display" title="Cormorant">Aa</button>
+                <button class="f3" data-pff="ui" title="Hanken Grotesk">Aa</button>
+              </div>
+            </span>
+            <button class="btn quiet" data-ps="front">To front</button>
+            <button class="btn quiet" data-ps="delete">Delete</button>
+          </div>
+          <div class="grp">
+            <button class="icon-btn" id="zOut" aria-label="Zoom out">−</button>
+            <button class="zoom-val" id="zVal" title="Fit to screen">Fit</button>
+            <button class="icon-btn" id="zIn" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+        <div class="stage" id="stage"><div class="sheet" id="sheet"></div></div>
+        <p class="poster-note"><span class="only-mouse">Double-click text to write. Drag to move, pull the corner to resize, arrow keys to nudge.</span><span class="only-touch">Tap a text, then tap it again to write. Drag to move, pull the round corner to resize.</span> Positions snap to 5&nbsp;mm.</p>
+      </div>
+    </article>
+
+    <div class="foot" id="foot"></div>
+
+    <aside class="drawer" id="drawer" aria-label="References">
+      <div class="drawer-head">
+        <h3>References</h3>
+        <button class="icon-btn" id="drawerClose" aria-label="Close">✕</button>
+      </div>
+      <form class="ref-form" id="refForm">
+        <input class="field" id="refUrl" type="url" placeholder="Paste a link: Are.na, Pinterest, an article…" required>
+        <input class="field" id="refNote" type="text" placeholder="Why it matters (optional)">
+        <button class="btn" type="submit">Pin to this piece</button>
+      </form>
+      <ul class="refs" id="refList"></ul>
+      <div class="drawer-foot">
+        <span>Open your boards in a new tab:</span>
+        <div class="row">
+          <a class="btn" href="https://www.are.na" target="_blank" rel="noopener">Are.na ↗</a>
+          <a class="btn" href="https://www.cosmos.so" target="_blank" rel="noopener">Cosmos ↗</a>
+          <a class="btn" href="https://www.pinterest.com" target="_blank" rel="noopener">Pinterest ↗</a>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <aside class="drawer" id="settings" aria-label="Sync and backup">
+    <div class="drawer-head">
+      <h3>Sync &amp; backup</h3>
+      <button class="icon-btn" id="setClose" aria-label="Close">✕</button>
+    </div>
+    <div class="set-body">
+      <p class="set-intro" id="setIntro" hidden>Welcome to Lichtung. To have the same pieces on your phone and your laptop, connect your private GitHub repository. You can also start writing now and connect later.</p>
+      <p class="set-status" id="setStatus"></p>
+      <section id="setConnect">
+        <p class="set-p">Pieces are saved on this device first, so writing works offline. With a repository connected, they also sync to GitHub, where every saved version is kept.</p>
+        <form class="ref-form" id="ghForm" autocomplete="off">
+          <label class="lab" for="ghOwner">GitHub account</label>
+          <input class="field" id="ghOwner" value="sudhara-jayalath" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <label class="lab" for="ghRepo">Private repository</label>
+          <input class="field" id="ghRepo" value="Lichtung-me" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <label class="lab" for="ghToken">Access token</label>
+          <input class="field" id="ghToken" type="password" placeholder="github_pat_…" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <button class="btn solid" id="ghConnect" type="submit">Connect</button>
+          <p class="set-err" id="ghErr" hidden></p>
+        </form>
+        <details class="how">
+          <summary>How to make an access token</summary>
+          <ol>
+            <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → new fine-grained token</a> and sign in.</li>
+            <li>Name it <b>Lichtung</b> and choose the longest expiry you're comfortable with.</li>
+            <li>Under <b>Repository access</b>, pick <b>Only select repositories</b> and choose <b>Lichtung-me</b>.</li>
+            <li>Under <b>Permissions → Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+            <li>Generate the token, copy it, and paste it above. Use the same token on your phone and your laptop.</li>
+          </ol>
+          <p class="set-p" style="margin-top:10px">The token stays on this device. It can only reach Lichtung-me, nothing else in your account.</p>
+        </details>
+        <button class="btn quiet" id="localOnly" type="button">Write on this device only for now</button>
+      </section>
+      <section id="setConnected" hidden>
+        <span class="label">Connected</span>
+        <p class="set-p" id="ghWhere"></p>
+        <div class="pub-warn" id="pubWarn" hidden>
+          <span>This repository is public, so anyone could read your pieces. Syncing stays paused until it's private: on GitHub, open the repository's Settings → General → Danger Zone → Change visibility.</span>
+          <div class="row"><button class="btn" id="recheck" type="button">Check again</button></div>
+        </div>
+        <div class="row">
+          <button class="btn" id="syncNow" type="button">Sync now</button>
+          <button class="btn quiet" id="ghDisconnect" type="button">Disconnect this device</button>
+        </div>
+      </section>
+      <hr>
+      <section>
+        <span class="label">Backup</span>
+        <p class="set-p">One file with every piece and image. Use it to bring your pieces over from the Claude version of Lichtung, or to keep a copy of your own.</p>
+        <div class="row">
+          <button class="btn" id="exportAll" type="button">Export everything</button>
+          <label class="btn" for="importFile" style="cursor:pointer">Import a file</label>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </div>
+      </section>
+      <hr>
+      <section>
+        <span class="label">On your phone</span>
+        <p class="set-p">iPhone: open this page in Safari, tap Share, then <b>Add to Home Screen</b>. Android: open the Chrome menu and tap <b>Install app</b>. On a laptop, Chrome and Edge offer <b>Install</b> in the address bar; Safari on a Mac has File → Add to Dock.</p>
+      </section>
+    </div>
+  </aside>
+
+  <div class="fmt" id="fmt" hidden>
+    <button data-cmd="bold" title="Bold"><b>B</b></button>
+    <button data-cmd="italic" title="Italic"><i>I</i></button>
+    <button data-cmd="h2" title="Heading">H</button>
+    <button data-cmd="quote" title="Quote">“</button>
+    <button data-cmd="link" title="Link">↗</button>
+    <button data-cmd="p" title="Plain text">¶</button>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const CATS = [
+    { id: "essay", name: "Essay", plural: "Essays", hint: "Long, slow, argued" },
+    { id: "article", name: "Article", plural: "Articles", hint: "Informative, structured" },
+    { id: "fragment", name: "Fragment", plural: "Fragments", hint: "Short stories, notes, shards" },
+    { id: "visual", name: "Visual essay", plural: "Visual essays", hint: "Images lead, words follow" },
+    { id: "poster", name: "Poster", plural: "Posters", hint: "A sheet to think on, DIN A1 or A0" },
+  ];
+  const catById = id => CATS.find(c => c.id === id) || CATS[0];
+  const STATUS = { seed: "Seed", draft: "Draft", ready: "Ready" };
+  const PROVOCATIONS = [
+    "Describe a place only by what it hides.",
+    "Begin with the smallest thing you saw this morning.",
+    "Write the paragraph you keep avoiding. Then cut its first sentence.",
+    "Name something without ever using its name.",
+    "A hundred words about a threshold.",
+    "Let a plant narrate for three sentences.",
+    "What did the ground remember today?",
+    "Write a sentence that takes as long to read as crossing a street.",
+    "Explain an idea through a single image.",
+    "Write what the map leaves out.",
+    "Start in the middle of a walk.",
+    "Take a word English has no equivalent for, and build a paragraph around it.",
+    "Write the caption before you choose the image.",
+    "Contradict the opening line of your last piece.",
+    "Describe weather as if it were an argument.",
+    "Write about distance without using a single number.",
+    "List seven things that are almost invisible.",
+    "Write one sentence and let it be the whole piece.",
+    "What does the edge of the city sound like at dawn?",
+    "End the paragraph earlier than the reader expects.",
+    "Describe an encounter with something larger than you.",
+    "Rewrite a cliché until it becomes true again.",
+    "Write from inside a hedge.",
+    "Leave one question unanswered on purpose.",
+    "What would this place say if it could refuse you?",
+    "Write the essay as a set of instructions for getting lost.",
+  ];
+
+  // ---------- state ----------
+  let pieces = [];            // array of piece objects
+  let filter = "all";
+  let current = null;         // piece being edited
+  let provIdx = Math.floor(Math.random() * PROVOCATIONS.length);
+  let sessionStart = 0;
+
+  // ---------- storage: this device first, then your private GitHub repository ----------
+  // Every change is written to this device at once (IndexedDB), so writing works offline.
+  // When a repository is connected, pieces sync as pieces/<id>.json and images as images/<id>.<ext>.
+  const idb = (() => {
+    let dbp = null;
+    const open = () => dbp || (dbp = new Promise((res, rej) => {
+      const r = indexedDB.open("lichtung", 1);
+      r.onupgradeneeded = () => {
+        const d = r.result;
+        d.createObjectStore("pieces", { keyPath: "id" });
+        d.createObjectStore("blobs", { keyPath: "id" });
+        d.createObjectStore("kv");
+      };
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    }));
+    const run = async (name, mode, fn) => {
+      const d = await open();
+      return new Promise((res, rej) => {
+        const t = d.transaction(name, mode);
+        const req = fn(t.objectStore(name));
+        let out;
+        if (req) req.onsuccess = () => { out = req.result; };
+        t.oncomplete = () => res(out);
+        t.onerror = () => rej(t.error);
+        t.onabort = () => rej(t.error);
+      });
+    };
+    return {
+      all: n => run(n, "readonly", s => s.getAll()),
+      get: (n, k) => run(n, "readonly", s => s.get(k)),
+      put: (n, v, k) => run(n, "readwrite", s => (k === undefined ? s.put(v) : s.put(v, k))),
+      del: (n, k) => run(n, "readwrite", s => s.delete(k)),
+    };
+  })();
+
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const MIME = { jpg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif" };
+  const extOf = type => ({ "image/jpeg": "jpg", "image/jpg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif" }[type] || "");
+  const b64FromBytes = bytes => {
+    let s = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(s);
+  };
+  // recognise an image by its first bytes when the file type label is missing
+  const sniff = u => u[0] === 0xFF && u[1] === 0xD8 ? "image/jpeg" : u[0] === 0x89 && u[1] === 0x50 ? "image/png" : u[0] === 0x47 && u[1] === 0x49 ? "image/gif" : u[8] === 0x57 && u[9] === 0x45 && u[10] === 0x42 && u[11] === 0x50 ? "image/webp" : "";
+  const b64Text = text => b64FromBytes(new TextEncoder().encode(text));
+  const b64Blob = async blob => b64FromBytes(new Uint8Array(await blob.arrayBuffer()));
+
+  const gh = {
+    cfg: null,
+    base() { return `https://api.github.com/repos/${encodeURIComponent(this.cfg.owner)}/${encodeURIComponent(this.cfg.repo)}`; },
+    async req(path, { method = "GET", body, raw, cfg } = {}) {
+      const c = cfg || this.cfg;
+      const url = path.startsWith("https://") ? path : this.base() + path;
+      let r;
+      try {
+        r = await fetch(url, {
+          method, cache: "no-store",
+          headers: {
+            Authorization: "Bearer " + c.token,
+            Accept: raw ? "application/vnd.github.raw+json" : "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            ...(body ? { "Content-Type": "application/json" } : {}),
+          },
+          body: body ? JSON.stringify(body) : undefined,
+        });
+      } catch (e) { const err = new Error("network"); err.code = 0; throw err; }
+      if (!r.ok) {
+        const err = new Error("github " + r.status); err.code = r.status;
+        try { err.detail = (await r.json()).message || ""; } catch {}
+        throw err;
+      }
+      return r;
+    },
+    async repoInfo(cfg) {
+      const r = await this.req(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`, { cfg });
+      return r.json();
+    },
+    async list(dir) {
+      try {
+        const r = await this.req(`/contents/${dir}`);
+        const arr = await r.json();
+        return new Map((Array.isArray(arr) ? arr : []).filter(f => f.type === "file" && f.name.endsWith(".json")).map(f => [f.name.slice(0, -5), f.sha]));
+      } catch (e) { if (e.code === 404) return new Map(); throw e; }   // an empty repository or folder
+    },
+    async getJSON(path) { return (await this.req(`/contents/${path}`, { raw: true })).json(); },
+    async getBlob(path, ext) { const b = await (await this.req(`/contents/${path}`, { raw: true })).blob(); return new Blob([b], { type: MIME[ext] || b.type }); },
+    async put(path, content, sha, message) {
+      const r = await this.req(`/contents/${path}`, { method: "PUT", body: { message, content, ...(sha ? { sha } : {}) } });
+      return (await r.json()).content.sha;
+    },
+    async del(path, sha, message) { await this.req(`/contents/${path}`, { method: "DELETE", body: { message, sha } }); },
+  };
+
+  // images: kept on this device as blobs, shown through object URLs
+  const urlCache = new Map();
+  function assetURL(id, ext) {
+    if (!urlCache.has(id)) {
+      urlCache.set(id, (async () => {
+        let rec = null;
+        try { rec = await idb.get("blobs", id); } catch {}
+        if (rec) return URL.createObjectURL(rec.blob);
+        if (!gh.cfg) throw new Error("missing");
+        const e = ext || "jpg";
+        const blob = await gh.getBlob(`images/${id}.${e}`, e);
+        try { await idb.put("blobs", { id, ext: e, blob, synced: true }); } catch {}
+        return URL.createObjectURL(blob);
+      })().catch(err => { urlCache.delete(id); throw err; }));
+    }
+    return urlCache.get(id);
+  }
+  function hydrateImages(root = document) {
+    root.querySelectorAll("img[data-asset]").forEach(img => {
+      if (img.dataset.state) return;
+      img.dataset.state = "loading";
+      assetURL(img.dataset.asset, img.dataset.ext)
+        .then(u => { img.src = u; img.dataset.state = "ok"; })
+        .catch(() => { img.dataset.state = "missing"; img.removeAttribute("src"); });
+    });
+  }
+  const imgTag = (b, attrs = "") => `<img data-asset="${esc(b.assetId)}" data-ext="${esc(b.ext || "")}" ${attrs}>`;
+  const localAssets = {
+    async add(file) {
+      let blob = file, ext = extOf(file.type), aspect = 1;
+      try {
+        const bmp = await createImageBitmap(file);
+        aspect = bmp.width / bmp.height || 1;
+        const big = Math.max(bmp.width, bmp.height), MAX = 2400;
+        if (big > MAX || file.size > 1.5e6 || !ext) {           // keep the repository light: phone photos shrink to 2400 px
+          const k = Math.min(1, MAX / big);
+          const c = document.createElement("canvas");
+          c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+          const ctx = c.getContext("2d");
+          ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+          ctx.drawImage(bmp, 0, 0, c.width, c.height);
+          blob = await new Promise((res, rej) => c.toBlob(b => (b ? res(b) : rej(new Error("encode"))), "image/jpeg", 0.86));
+          ext = "jpg";
+        }
+        if (bmp.close) bmp.close();
+      } catch (e) { if (!ext) throw new Error("unreadable"); }
+      const id = uid();
+      await idb.put("blobs", { id, ext, blob, synced: false });
+      urlCache.set(id, Promise.resolve(URL.createObjectURL(blob)));
+      store.schedule();
+      return { id, ext, aspect };
+    },
+  };
+
+  const store = {
+    cfg: null, recs: new Map(), state: "local", err: null, lastSync: 0,
+    syncing: false, again: false, timer: null, onChange: () => {}, allowPublic: false, localOnly: false, ready: false,
+    meta(id) { if (!this.recs.has(id)) this.recs.set(id, { sha: null, base: 0, dirty: false, deleted: false, rev: 0 }); return this.recs.get(id); },
+    record(id, data) { const r = this.meta(id); return { id, data, sha: r.sha, base: r.base, dirty: r.dirty, deleted: r.deleted, rev: r.rev }; },
+
+    async init(onChange) {
+      this.onChange = onChange;
+      try {
+        this.cfg = (await idb.get("kv", "github")) || null;
+        this.allowPublic = !!(await idb.get("kv", "allowPublic"));
+        this.localOnly = !!(await idb.get("kv", "localOnly"));
+        this.lastSync = (await idb.get("kv", "lastSync")) || 0;
+        pieces = [];
+        for (const r of await idb.all("pieces")) {
+          this.recs.set(r.id, { sha: r.sha || null, base: r.base || 0, dirty: !!r.dirty, deleted: !!r.deleted, rev: r.rev || 0 });
+          if (!r.deleted && r.data) pieces.push({ ...r.data, id: r.id });
+        }
+      } catch (e) {
+        this.noDevice = true;   // private browsing without IndexedDB: still usable, nothing survives a reload
+      }
+      gh.cfg = this.cfg;
+      this.ready = true;
+      try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch {}
+      this.setStatus(this.cfg ? "idle" : "local");
+      onChange();
+      if (!this.cfg && !this.localOnly) openSettings(true);
+      this.sync();
+      window.addEventListener("online", () => this.sync());
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) this.sync(); });
+      setInterval(() => { if (!document.hidden) this.sync(); }, 120000);
+      setInterval(renderSync, 60000);
+    },
+
+    save(p) {
+      const r = this.meta(p.id);
+      r.dirty = true; r.deleted = false; r.rev++;
+      this.schedule();
+      if (this.noDevice) return Promise.resolve();
+      return idb.put("pieces", this.record(p.id, clone(p)));
+    },
+    remove(id) {
+      pieces = pieces.filter(p => p.id !== id);
+      const r = this.meta(id);
+      if (!r.sha) { this.recs.delete(id); return this.noDevice ? Promise.resolve() : idb.del("pieces", id); }   // never left this device
+      r.deleted = true; r.dirty = true; r.rev++;
+      this.schedule();
+      return this.noDevice ? Promise.resolve() : idb.put("pieces", this.record(id, null));
+    },
+    schedule(ms = 6000) {
+      if (!this.cfg) return;
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => this.sync(), ms);
+    },
+    pending() { let n = 0; this.recs.forEach(r => { if (r.dirty) n++; }); return n; },
+
+    setStatus(s, err) { this.state = s; this.err = err || null; renderSync(); },
+
+    async connect(cfg) {
+      const info = await gh.repoInfo(cfg);
+      cfg.private = !!info.private;
+      cfg.repo = info.name; cfg.owner = info.owner && info.owner.login || cfg.owner;
+      this.cfg = cfg; gh.cfg = cfg;
+      await idb.put("kv", cfg, "github");
+      await idb.put("kv", false, "localOnly"); this.localOnly = false;
+      this.setStatus("idle");
+      this.sync();
+      return cfg;
+    },
+    async recheck() {
+      const info = await gh.repoInfo(this.cfg);
+      this.cfg.private = !!info.private;
+      await idb.put("kv", this.cfg, "github");
+      this.setStatus("idle"); this.sync();
+    },
+    async disconnect() {
+      clearTimeout(this.timer);
+      this.cfg = null; gh.cfg = null;
+      await idb.del("kv", "github");
+      this.setStatus("local");
+    },
+
+    async sync() {
+      if (!this.ready || !this.cfg) return;
+      if (this.syncing) { this.again = true; return; }
+      if (!this.cfg.private && !this.allowPublic) { this.setStatus("public"); return; }
+      if (navigator.onLine === false) { this.setStatus("offline"); return; }
+      this.syncing = true; this.setStatus("syncing");
+      let changed = false;
+      try {
+        // 1. images first, so a piece never points at an image the repository doesn't have yet
+        if (!this.noDevice) {
+          for (const b of await idb.all("blobs")) {
+            if (b.synced) continue;
+            try { await gh.put(`images/${b.id}.${b.ext}`, await b64Blob(b.blob), null, "Add image"); }
+            catch (e) { if (e.code !== 422) throw e; }   // already there from an earlier attempt
+            b.synced = true; await idb.put("blobs", b);
+          }
+        }
+        // 2. what the repository holds now
+        const remote = await gh.list("pieces");
+        // 3. send this device's changes
+        for (const [id, r] of [...this.recs]) {
+          if (!r.dirty) continue;
+          const rev = r.rev, rsha = remote.get(id);
+          if (r.deleted) {
+            if (rsha && rsha !== r.sha) { r.deleted = false; r.dirty = false; r.sha = null; continue; }   // edited elsewhere after this delete: keep it
+            if (rsha) await gh.del(`pieces/${id}.json`, rsha, "Delete piece");
+            if (r.rev === rev) { this.recs.delete(id); remote.delete(id); if (!this.noDevice) await idb.del("pieces", id); }
+            continue;
+          }
+          const p = pieces.find(x => x.id === id);
+          if (!p) { r.dirty = false; continue; }
+          const body = clone(p);
+          if (rsha && rsha !== r.sha) {
+            // changed in the repository since this device last saw it
+            const other = await gh.getJSON(`pieces/${id}.json`);
+            const same = JSON.stringify({ ...other, updated: 0, id: 0 }) === JSON.stringify({ ...body, updated: 0, id: 0 });
+            if (same) {                                         // identical already (e.g. the same import on two devices)
+              r.sha = rsha; r.base = Math.max(other.updated || 0, body.updated || 0);
+              if (r.rev === rev) r.dirty = false;
+              if (!this.noDevice) await idb.put("pieces", this.record(id, clone(p)));
+              continue;
+            }
+            if ((other.updated || 0) > (r.base || 0)) {
+              // written on another device: nothing is overwritten, that version is kept as its own piece
+              const copy = { ...other, id: uid(), title: (other.title || "Untitled") + " (other device)" };
+              pieces.push(copy);
+              const cr = this.meta(copy.id); cr.dirty = true; cr.rev = 1;
+              if (!this.noDevice) await idb.put("pieces", this.record(copy.id, clone(copy)));
+              changed = true;
+            }
+          }
+          const sha = await gh.put(`pieces/${id}.json`, b64Text(JSON.stringify(body, null, 2)), rsha, `${rsha ? "Update" : "Add"}: ${p.title || "Untitled"}`);
+          r.sha = sha; r.base = body.updated || 0; remote.set(id, sha);
+          if (r.rev === rev) r.dirty = false;
+          if (!this.noDevice) await idb.put("pieces", this.record(id, clone(p)));
+        }
+        // 4. bring in changes from other devices
+        for (const [id, sha] of remote) {
+          const r = this.recs.get(id);
+          if (r && (r.dirty || r.sha === sha)) continue;
+          if (current && current.id === id) continue;            // never swap a piece while it is open; next round
+          const data = await gh.getJSON(`pieces/${id}.json`);
+          if (r && (data.updated || 0) < (r.base || 0)) continue; // an older copy GitHub hasn't refreshed yet
+          data.id = id;
+          const i = pieces.findIndex(x => x.id === id);
+          if (i >= 0) pieces[i] = data; else pieces.push(data);
+          const nr = this.meta(id); nr.sha = sha; nr.base = data.updated || 0; nr.dirty = false; nr.deleted = false;
+          if (!this.noDevice) await idb.put("pieces", this.record(id, data));
+          changed = true;
+        }
+        // 5. pieces deleted on another device
+        for (const [id, r] of [...this.recs]) {
+          if (r.sha && !r.dirty && !remote.has(id) && !(current && current.id === id)) {
+            pieces = pieces.filter(p => p.id !== id);
+            this.recs.delete(id);
+            if (!this.noDevice) await idb.del("pieces", id);
+            changed = true;
+          }
+        }
+        this.lastSync = Date.now();
+        if (!this.noDevice) idb.put("kv", this.lastSync, "lastSync").catch(() => {});
+        this.setStatus("synced");
+      } catch (e) {
+        const s = e.code === 401 ? "auth" : e.code === 403 ? "forbidden" : e.code === 404 ? "norepo" : (e.code === 0 || navigator.onLine === false) ? "offline" : "error";
+        this.setStatus(s, e);
+        if (s === "error" || s === "offline") this.schedule(30000);
+      } finally {
+        this.syncing = false;
+        if (changed) this.onChange();
+        if (this.again) { this.again = false; this.schedule(1500); }
+      }
+    },
+  };
+
+  // backup file: every piece and image in one JSON file (same shape as the Claude version's export)
+  async function exportAll() {
+    const images = {};
+    for (const p of pieces) {
+      const refs = [...(p.blocks || []), ...((p.poster && p.poster.items) || [])].filter(b => b.type === "image" && b.assetId);
+      for (const b of refs) {
+        if (images[b.assetId]) continue;
+        try {
+          const u = await assetURL(b.assetId, b.ext);
+          const blob = await (await fetch(u)).blob();
+          images[b.assetId] = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = rej; fr.readAsDataURL(blob); });
+        } catch {}
+      }
+    }
+    return JSON.stringify({ app: "lichtung", version: 1, exported: new Date().toISOString(), pieces, images });
+  }
+  async function importAll(text) {
+    const data = JSON.parse(text);
+    if (!data || !Array.isArray(data.pieces)) throw new Error("format");
+    const known = {};
+    for (const [id, url] of Object.entries(data.images || {})) {
+      if (!/^[A-Za-z0-9_-]{1,64}$/.test(id) || typeof url !== "string" || !url.startsWith("data:")) continue;
+      let blob = await (await fetch(url)).blob();
+      if (!extOf(blob.type)) {
+        const t = sniff(new Uint8Array(await blob.slice(0, 16).arrayBuffer()));
+        if (!t) continue;
+        blob = new Blob([blob], { type: t });
+      }
+      const ext = extOf(blob.type);
+      await idb.put("blobs", { id, ext, blob, synced: false });
+      urlCache.set(id, Promise.resolve(URL.createObjectURL(blob)));
+      known[id] = ext;
+    }
+    const fix = list => (list || []).filter(b => {
+      if (b.type !== "image" || !b.assetId) return true;
+      delete b.url;
+      if (known[b.assetId]) { b.ext = known[b.assetId]; return true; }
+      if (b.ext) return true;                      // already in the repository
+      if (b.x !== undefined) return false;         // poster image that didn't come along
+      delete b.assetId; return true;               // essay image slot stays, empty
+    });
+    let added = 0, updated = 0;
+    for (const raw of data.pieces) {
+      if (!raw || !raw.id || !/^[A-Za-z0-9_-]{1,64}$/.test(raw.id)) continue;
+      const p = clone(raw);
+      p.blocks = fix(p.blocks);
+      if (p.poster) p.poster.items = fix(p.poster.items);
+      const i = pieces.findIndex(x => x.id === p.id);
+      if (i >= 0) { if ((p.updated || 0) <= (pieces[i].updated || 0)) continue; pieces[i] = p; updated++; }
+      else { pieces.push(p); added++; }
+      await store.save(p);
+    }
+    return { added, updated, images: Object.keys(known).length };
+  }
+
+  async function saveFile(name, data, type) {
+    const blob = data instanceof Blob ? data : new Blob([data], { type });
+    try {
+      const file = new File([blob], name, { type: blob.type || type });
+      if (matchMedia("(pointer: coarse)").matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        return;
+      }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+
+  // ---------- helpers ----------
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const textOf = html => { const d = document.createElement("div"); d.innerHTML = html || ""; return d.textContent || ""; };
+  const countWords = s => (s.trim().match(/\S+/g) || []).length;
+  const pieceWords = p => countWords([p.title, p.standfirst, ...(p.category === "poster"
+    ? ((p.poster && p.poster.items) || []).filter(t => t.type === "text").map(t => t.text || "")
+    : (p.blocks || []).map(b => b.type === "text" ? textOf(b.html) : (b.caption || "")))].join(" "));
+  const fmtDate = t => {
+    if (!t) return "";
+    const d = new Date(t), now = new Date();
+    const days = Math.floor((now - d) / 864e5);
+    if (days < 1 && d.getDate() === now.getDate()) return "Today, " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    if (days < 2) return "Yesterday";
+    return d.toLocaleDateString([], { day: "numeric", month: "short", year: d.getFullYear() === now.getFullYear() ? undefined : "numeric" });
+  };
+  let toastT;
+  const toast = msg => { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); };
+
+  // ---------- library ----------
+  function renderTabs() {
+    const counts = { all: pieces.length };
+    CATS.forEach(c => counts[c.id] = pieces.filter(p => p.category === c.id).length);
+    $("#tabs").innerHTML = [{ id: "all", plural: "All" }, ...CATS].map(c =>
+      `<button class="tab" role="tab" data-f="${c.id}" aria-selected="${filter === c.id}">${c.plural}<sup>${counts[c.id]}</sup></button>`).join("");
+  }
+  function renderEntries() {
+    const list = pieces.filter(p => filter === "all" || p.category === filter)
+      .sort((a, b) => (b.updated || 0) - (a.updated || 0));
+    const el = $("#entries");
+    if (!list.length) {
+      const c = filter === "all" ? null : catById(filter);
+      el.innerHTML = `<div class="empty">
+        <span class="label">${c ? c.plural : "Your desk is clear"}</span>
+        <h2>${c ? `No ${c.plural.toLowerCase()} yet.` : "Every piece starts as a seed."}</h2>
+        <p>${c ? c.hint + ". Start one and it will appear here." : "Pick a form to begin. Your pieces appear here, newest first, and save as you type."}</p>
+        <div class="row">${(c ? [c] : CATS).map(x => `<button class="btn" data-new="${x.id}">New ${x.name.toLowerCase()}</button>`).join("")}</div>
+      </div>`;
+      return;
+    }
+    el.innerHTML = list.map((p, i) => {
+      const isPoster = p.category === "poster";
+      const firstText = (p.blocks || []).find(b => b.type === "text");
+      const firstPt = isPoster && p.poster ? p.poster.items.find(t => t.type === "text" && t.text) : null;
+      const excerpt = p.standfirst || (isPoster ? (firstPt ? firstPt.text : "") : (firstText ? textOf(firstText.html) : ""));
+      const img = !isPoster && (p.blocks || []).find(b => b.type === "image" && b.assetId);
+      const mini = isPoster && p.poster ? miniSheet(p) : "";
+      return `<button class="entry" data-open="${p.id}" style="animation-delay:${Math.min(i, 8) * 45}ms">
+        <div class="e-body">
+          <span class="label">${catById(p.category).name}</span>
+          <h3 class="e-title ${p.title ? "" : "untitled"}">${esc(p.title || "Untitled")}</h3>
+          ${excerpt ? `<p class="e-excerpt">${esc(excerpt.slice(0, 220))}</p>` : ""}
+          <div class="e-meta"><span class="status s-${p.status || "seed"}">${STATUS[p.status || "seed"]}</span><span>${pieceWords(p).toLocaleString()} words</span><span>${fmtDate(p.updated)}</span></div>
+        </div>
+        ${mini || (img ? imgTag(img, 'class="thumb" alt=""') : "")}
+      </button>`;
+    }).join("");
+    hydrateImages(el);
+  }
+  function renderTally() {
+    const total = pieces.reduce((n, p) => n + pieceWords(p), 0);
+    const ready = pieces.filter(p => p.status === "ready").length;
+    const draft = pieces.filter(p => p.status === "draft").length;
+    const seed = pieces.length - ready - draft;
+    $("#tally").innerHTML = `<span class="label">On the desk</span>
+      <div class="tally-row"><span>Words written</span><b>${total.toLocaleString()}</b></div>
+      <div class="tally-row"><span>Seeds</span><b>${seed}</b></div>
+      <div class="tally-row"><span>Drafts</span><b>${draft}</b></div>
+      <div class="tally-row"><span>Ready for the blog</span><b>${ready}</b></div>`;
+  }
+  function renderLibrary() { renderTabs(); renderEntries(); renderTally(); }
+  function renderProv(swap) {
+    const set = () => { $("#provText").textContent = PROVOCATIONS[provIdx]; $("#provText2").textContent = PROVOCATIONS[provIdx]; };
+    if (!swap) return set();
+    [$("#provText"), $("#provText2")].forEach(e => e.classList.add("swap"));
+    setTimeout(() => { set(); [$("#provText"), $("#provText2")].forEach(e => e.classList.remove("swap")); }, 220);
+  }
+  const nextProv = () => { provIdx = (provIdx + 1 + Math.floor(Math.random() * 5)) % PROVOCATIONS.length; renderProv(true); };
+
+  $("#chooser").innerHTML = CATS.map(c => `<button data-new="${c.id}"><b>${c.name}</b><small>${c.hint}</small></button>`).join("");
+  $("#newBtn").addEventListener("click", e => {
+    e.stopPropagation();
+    const ch = $("#chooser"); ch.hidden = !ch.hidden; $("#newBtn").setAttribute("aria-expanded", String(!ch.hidden));
+  });
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".new-wrap")) $("#chooser").hidden = true;
+    if (!e.target.closest("#moreBtn") && !e.target.closest("#morePop")) { $("#morePop").hidden = true; $("#delConfirm").hidden = true; $("#delAsk").hidden = false; }
+    if (!e.target.closest("#provBtn") && !e.target.closest("#provFloat")) $("#provFloat").hidden = true;
+    if (!e.target.closest(".ins")) closeInsMenus();
+    const nb = e.target.closest("[data-new]"); if (nb) newPiece(nb.dataset.new);
+    const op = e.target.closest("[data-open]"); if (op) openPiece(op.dataset.open);
+    const tb = e.target.closest("[data-f]"); if (tb) { filter = tb.dataset.f; renderLibrary(); }
+  });
+  $("#provNext").addEventListener("click", nextProv);
+  $("#provNext2").addEventListener("click", nextProv);
+  $("#provWrite").addEventListener("click", () => newPiece("fragment", PROVOCATIONS[provIdx]));
+
+  // ---------- pieces ----------
+  function newPiece(category, standfirst = "") {
+    $("#chooser").hidden = true;
+    const now = Date.now();
+    const p = {
+      id: uid(), category, status: "seed", title: "", standfirst,
+      font: category === "fragment" ? "display" : "read",
+      poster: category === "poster" ? newPosterData() : undefined,
+      blocks: category === "poster" ? [] : category === "visual"
+        ? [{ id: uid(), type: "image", size: "full", caption: "" }, { id: uid(), type: "text", html: "" }]
+        : [{ id: uid(), type: "text", html: "" }],
+      refs: [], created: now, updated: now,
+    };
+    pieces.push(p);
+    store.save(p);
+    openPiece(p.id, true);
+  }
+
+  function openPiece(id, fresh) {
+    const p = pieces.find(x => x.id === id); if (!p) return;
+    current = p;
+    sessionStart = pieceWords(p);
+    $("#library").hidden = true; $("#editor").hidden = false;
+    renderEditor();
+    window.scrollTo(0, 0);
+    setTimeout(() => (fresh ? $("#tTitle") : null)?.focus(), 50);
+  }
+
+  function closeEditor() {
+    if (editingId) endEdit();
+    selId = null;
+    flush();
+    store.schedule(800);
+    current = null;
+    document.body.classList.remove("focus");
+    $("#focusBtn").setAttribute("aria-pressed", "false");
+    $("#drawer").classList.remove("open"); $("#refsBtn").setAttribute("aria-pressed", "false");
+    $("#editor").hidden = true; $("#library").hidden = false; $("#fmt").hidden = true;
+    renderLibrary();
+    window.scrollTo(0, 0);
+  }
+  $("#backBtn").addEventListener("click", closeEditor);
+
+  // ---------- editor render ----------
+  $("#catSel").innerHTML = CATS.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+
+  function applyFont() {
+    const f = current.font || "read";
+    const map = { read: "var(--f-read)", display: "var(--f-display)", ui: "var(--f-ui)" };
+    $("#page").style.setProperty("--f-write", map[f]);
+    $("#page").classList.toggle("f-display", f === "display");
+    $("#page").classList.toggle("f-ui", f === "ui");
+    document.querySelectorAll("#fontSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.font === f)));
+  }
+
+  function renderEditor() {
+    const p = current;
+    $("#catSel").value = p.category; $("#statusSel").value = p.status || "seed";
+    $("#pageCat").textContent = catById(p.category).name;
+    $("#page").classList.toggle("frag", p.category === "fragment");
+    $("#tTitle").textContent = p.title || "";
+    $("#tStand").textContent = p.standfirst || "";
+    applyFont();
+    const isPoster = p.category === "poster";
+    $("#page").classList.toggle("poster-mode", isPoster);
+    $("#blocks").hidden = isPoster; $("#posterView").hidden = !isPoster;
+    $("#fontSeg").hidden = isPoster; $("#focusBtn").hidden = isPoster; $("#foot").hidden = isPoster;
+    $("#copyMd").hidden = isPoster; $("#dlMd").hidden = isPoster; $("#dlPng").hidden = !isPoster;
+    if (isPoster) {
+      if (!p.poster) p.poster = newPosterData();
+      document.body.classList.remove("focus"); $("#focusBtn").setAttribute("aria-pressed", "false");
+      selId = null; editingId = null; zoom = 1;
+      requestAnimationFrame(renderPoster);
+    } else {
+      if (!p.blocks || !p.blocks.length) p.blocks = [{ id: uid(), type: "text", html: "" }];
+      renderBlocks();
+    }
+    renderRefs();
+    updateFoot();
+    $("#saved").textContent = "";
+  }
+
+  function insHtml(i) {
+    return `<div class="ins" data-at="${i}"><button class="ins-btn" aria-label="Add a block">+</button></div>`;
+  }
+  function blockHtml(b) {
+    if (b.type === "text") {
+      return `<div class="blk txt-blk" data-id="${b.id}" data-type="text">
+        <div class="blk-tools"><button data-act="remove">Remove</button></div>
+        <div class="txt" contenteditable="true" data-ph="Write…">${b.html || ""}</div></div>`;
+    }
+    if (b.type === "divider") {
+      return `<div class="blk divider-blk" data-id="${b.id}" data-type="divider">
+        <div class="blk-tools"><button data-act="remove">Remove</button></div>
+        <div class="divider" aria-hidden="true">· · ·</div></div>`;
+    }
+    const src = !!b.assetId;
+    const size = b.size || "column";
+    return `<div class="blk" data-id="${b.id}" data-type="image">
+      <figure class="fig ${size}">
+        ${src ? `<div class="blk-tools">
+            ${["column", "wide", "full"].map(s => `<button data-size="${s}" aria-pressed="${s === size}">${s}</button>`).join("")}
+            <button data-act="remove">Remove</button></div>
+          ${imgTag(b, `alt="${esc(b.caption || "")}"`)}`
+        : `<label class="drop">
+            <span class="label">Image</span>
+            <span>Drop an image here or <u>choose a file</u></span>
+            <input type="file" accept="image/*">
+          </label>
+          <div class="blk-tools" style="opacity:1;position:static;justify-self:end;box-shadow:none"><button data-act="remove">Remove</button></div>`}
+        <figcaption contenteditable="true" data-ph="Caption">${esc(b.caption || "")}</figcaption>
+      </figure></div>`;
+  }
+  function renderBlocks() {
+    const bl = current.blocks;
+    $("#blocks").innerHTML = insHtml(0) + bl.map((b, i) => blockHtml(b) + insHtml(i + 1)).join("");
+    hydrateImages($("#blocks"));
+  }
+
+  // ---------- collect & save ----------
+  let saveT = null, dirty = false;
+  function collect() {
+    const p = current; if (!p) return;
+    p.title = $("#tTitle").textContent.trim();
+    p.standfirst = $("#tStand").textContent.trim();
+    if (p.category === "poster") {
+      if (editingId) { const it = pItem(editingId), el = $(`#sheet [data-pid="${editingId}"] .pt`); if (it && el) it.text = el.innerText.replace(/\n$/, ""); }
+      return;
+    }
+    const byId = Object.fromEntries(p.blocks.map(b => [b.id, b]));
+    p.blocks = [...$("#blocks").querySelectorAll(":scope > .blk")].map(el => {
+      const b = { ...byId[el.dataset.id] };
+      if (b.type === "text") {
+        const t = el.querySelector(".txt");
+        b.html = t.textContent.trim() || t.querySelector("img,hr") ? t.innerHTML : "";
+      } else if (b.type === "image") {
+        b.caption = el.querySelector("figcaption").textContent.trim();
+      }
+      return b;
+    });
+  }
+  function markDirty() {
+    dirty = true;
+    $("#saved").textContent = "Editing…";
+    updateFoot();
+    clearTimeout(saveT);
+    saveT = setTimeout(flush, 900);
+  }
+  function flush() {
+    clearTimeout(saveT);
+    if (!current || !dirty) return;
+    dirty = false;
+    collect();
+    current.updated = Date.now();
+    const p = current;
+    store.save(p).then(() => { if (current === p && !dirty) $("#saved").textContent = "Saved"; })
+      .catch(err => { $("#saved").textContent = "Not saved"; toast(err && err.code === "quota_exceeded" ? "Storage is full. Delete an old piece to keep saving." : "Couldn't save just now. Keep writing; it will retry on the next change."); dirty = true; });
+  }
+  window.addEventListener("pagehide", flush);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) { flush(); store.sync(); } });
+
+  function updateFoot() {
+    if (!current) return;
+    const words = countWords([$("#tTitle").textContent, $("#tStand").textContent,
+      ...[...$("#blocks").querySelectorAll(".txt, figcaption")].map(e => e.textContent)].join(" "));
+    const mins = Math.max(1, Math.round(words / 230));
+    const delta = words - sessionStart;
+    $("#foot").innerHTML = `<span><b>${words.toLocaleString()}</b> words</span><span><b>${mins}</b> min read</span>` +
+      (delta > 0 ? `<span><b>+${delta.toLocaleString()}</b> this sitting</span>` : "");
+  }
+
+  // ---------- editor events ----------
+  try { document.execCommand("defaultParagraphSeparator", false, "p"); } catch {}
+  const pageEl = $("#page");
+  pageEl.addEventListener("input", e => {
+    const pt = e.target.closest && e.target.closest(".pt");
+    if (pt) { const it = pItem(pt.closest(".pi").dataset.pid); if (it) it.text = pt.innerText.replace(/\n$/, ""); markDirty(); return; }
+    const t = e.target.closest(".txt");
+    if (t && !t.firstElementChild && t.textContent) {
+      // wrap the first loose line in a paragraph
+      const sel = getSelection();
+      const p = document.createElement("p"); p.textContent = t.textContent; t.textContent = ""; t.appendChild(p);
+      const r = document.createRange(); r.selectNodeContents(p); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+    markDirty();
+  });
+  pageEl.addEventListener("paste", e => {
+    if (!e.target.closest("[contenteditable]")) return;
+    const text = (e.clipboardData || window.clipboardData).getData("text/plain");
+    if (!text) return;
+    e.preventDefault();
+    const inBody = e.target.closest(".txt");
+    if (e.target.closest(".pt")) { document.execCommand("insertText", false, text); return; }
+    if (inBody && text.includes("\n")) {
+      const html = text.split(/\n{2,}/).map(par => `<p>${esc(par).replace(/\n/g, "<br>")}</p>`).join("");
+      document.execCommand("insertHTML", false, html);
+    } else {
+      document.execCommand("insertText", false, text.replace(/\s*\n\s*/g, " "));
+    }
+  });
+  pageEl.addEventListener("keydown", e => {
+    if ((e.target.id === "tTitle" || e.target.id === "tStand" || e.target.tagName === "FIGCAPTION") && e.key === "Enter") {
+      e.preventDefault();
+      if (e.target.id === "tTitle") $("#tStand").focus();
+      else if (e.target.id === "tStand") { const f = $("#blocks .txt"); if (f) placeCaret(f, false); }
+    }
+  });
+  function placeCaret(el, atEnd = true) {
+    el.focus();
+    const r = document.createRange(); r.selectNodeContents(el); r.collapse(!atEnd ? true : false);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+
+  // block tools and inserter
+  function closeInsMenus() { document.querySelectorAll(".ins-menu").forEach(m => m.remove()); document.querySelectorAll(".ins.open").forEach(m => m.classList.remove("open")); }
+  $("#blocks").addEventListener("click", e => {
+    const insBtn = e.target.closest(".ins-btn");
+    if (insBtn) {
+      const ins = insBtn.parentElement;
+      const wasOpen = ins.classList.contains("open");
+      closeInsMenus();
+      if (!wasOpen) {
+        ins.classList.add("open");
+        const m = document.createElement("div"); m.className = "ins-menu";
+        m.innerHTML = `<button data-add="text">Text</button><button data-add="image">Image</button><button data-add="divider">Divider</button>`;
+        ins.appendChild(m);
+      }
+      return;
+    }
+    const add = e.target.closest("[data-add]");
+    if (add) {
+      collect();
+      const at = +add.closest(".ins").dataset.at;
+      const type = add.dataset.add;
+      const b = { id: uid(), type };
+      if (type === "text") b.html = "";
+      if (type === "image") { b.size = current.category === "visual" ? "wide" : "column"; b.caption = ""; }
+      current.blocks.splice(at, 0, b);
+      renderBlocks(); markDirty();
+      if (type === "text") placeCaret($(`[data-id="${b.id}"] .txt`));
+      return;
+    }
+    const act = e.target.closest("[data-act='remove']");
+    if (act) {
+      collect();
+      const id = act.closest(".blk").dataset.id;
+      current.blocks = current.blocks.filter(b => b.id !== id);
+      if (!current.blocks.length) current.blocks.push({ id: uid(), type: "text", html: "" });
+      renderBlocks(); markDirty();
+      return;
+    }
+    const sz = e.target.closest("[data-size]");
+    if (sz) {
+      collect();
+      const id = sz.closest(".blk").dataset.id;
+      const b = current.blocks.find(x => x.id === id); b.size = sz.dataset.size;
+      renderBlocks(); markDirty();
+    }
+  });
+
+  // images
+  async function handleImage(blkEl, file) {
+    if (!file || !file.type.startsWith("image/")) { toast("That file isn't an image."); return; }
+    const drop = blkEl.querySelector(".drop");
+    if (drop) drop.querySelector("span:nth-child(2)").textContent = "Adding…";
+    try {
+      const res = await localAssets.add(file);
+      collect();
+      const b = current.blocks.find(x => x.id === blkEl.dataset.id);
+      b.assetId = res.id; b.ext = res.ext; delete b.url;
+      renderBlocks(); markDirty();
+    } catch (err) {
+      toast(err && err.name === "QuotaExceededError" ? "This device is out of space for images." : "That image couldn't be read. Try a JPG or PNG.");
+      if (drop) drop.querySelector("span:nth-child(2)").innerHTML = "Drop an image here or <u>choose a file</u>";
+    }
+  }
+  $("#blocks").addEventListener("change", e => {
+    if (e.target.matches("input[type=file]")) handleImage(e.target.closest(".blk"), e.target.files[0]);
+  });
+  $("#blocks").addEventListener("dragover", e => { const d = e.target.closest(".drop"); if (d) { e.preventDefault(); d.classList.add("over"); } });
+  $("#blocks").addEventListener("dragleave", e => { const d = e.target.closest(".drop"); if (d) d.classList.remove("over"); });
+  $("#blocks").addEventListener("drop", e => {
+    const d = e.target.closest(".drop"); if (!d) return;
+    e.preventDefault(); d.classList.remove("over");
+    handleImage(d.closest(".blk"), e.dataTransfer.files[0]);
+  });
+
+  // bar controls
+  $("#catSel").addEventListener("change", e => {
+    if (editingId) endEdit();
+    collect(); current.category = e.target.value; renderEditor(); markDirty();
+  });
+  $("#statusSel").addEventListener("change", e => { current.status = e.target.value; markDirty(); if (e.target.value === "ready") toast("Ready for the blog."); });
+  document.querySelectorAll("#fontSeg button").forEach(b => b.addEventListener("click", () => { current.font = b.dataset.font; applyFont(); markDirty(); }));
+  $("#focusBtn").addEventListener("click", () => {
+    const on = document.body.classList.toggle("focus");
+    $("#focusBtn").setAttribute("aria-pressed", String(on));
+    if (on) toast("Focus mode. Only the paragraph you're in stays lit.");
+  });
+  $("#provBtn").addEventListener("click", e => { e.stopPropagation(); $("#provFloat").hidden = !$("#provFloat").hidden; });
+  $("#provInsert").addEventListener("click", () => {
+    collect();
+    current.blocks.push({ id: uid(), type: "text", html: `<blockquote>${esc(PROVOCATIONS[provIdx])}</blockquote><p><br></p>` });
+    renderBlocks(); markDirty(); $("#provFloat").hidden = true;
+    const last = [...$("#blocks").querySelectorAll(".txt")].pop(); placeCaret(last);
+  });
+  $("#moreBtn").addEventListener("click", e => { e.stopPropagation(); $("#morePop").hidden = !$("#morePop").hidden; });
+  $("#delAsk").addEventListener("click", e => { e.stopPropagation(); $("#delAsk").hidden = true; $("#delConfirm").hidden = false; });
+  $("#delNo").addEventListener("click", e => { e.stopPropagation(); $("#delAsk").hidden = false; $("#delConfirm").hidden = true; });
+  $("#delYes").addEventListener("click", async () => {
+    const id = current.id; dirty = false; clearTimeout(saveT);
+    current = null;
+    try { await store.remove(id); } catch {}
+    $("#morePop").hidden = true;
+    $("#editor").hidden = true; $("#library").hidden = false; document.body.classList.remove("focus");
+    renderLibrary(); toast("Deleted.");
+  });
+
+  // focus-mode current paragraph + floating format bar
+  let curEl = null;
+  document.addEventListener("selectionchange", () => {
+    if (!current) return;
+    if (document.activeElement && document.activeElement.closest && document.activeElement.closest("#fmt")) return;
+    const s = getSelection(); if (!s.rangeCount) return;
+    const node = s.anchorNode; const el = node && (node.nodeType === 1 ? node : node.parentElement);
+    const txt = el && el.closest(".txt");
+    let para = null;
+    if (txt) { para = el; while (para && para.parentElement !== txt) para = para.parentElement; }
+    if (curEl !== para) { curEl && curEl.classList.remove("cur"); para && para.classList.add("cur"); curEl = para; }
+    const fmt = $("#fmt");
+    if (txt && !s.isCollapsed) {
+      const rect = s.getRangeAt(0).getBoundingClientRect();
+      if (rect.width) {
+        fmt.hidden = false;
+        const touch = matchMedia("(pointer: coarse)").matches;
+        fmt.style.left = Math.min(Math.max(rect.left + rect.width / 2, 120), innerWidth - 120) + "px";
+        fmt.style.top = touch ? Math.min(rect.bottom + 14, innerHeight - 60) + "px" : Math.max(rect.top - 8, 56) + "px";
+        fmt.style.transform = touch ? "translate(-50%, 0)" : "";
+        return;
+      }
+    }
+    fmt.hidden = true;
+  });
+  $("#fmt").addEventListener("mousedown", e => e.preventDefault());
+  $("#fmt").addEventListener("click", e => {
+    const b = e.target.closest("[data-cmd]"); if (!b) return;
+    const c = b.dataset.cmd;
+    if (c === "bold" || c === "italic") document.execCommand(c);
+    if (c === "h2") document.execCommand("formatBlock", false, "h2");
+    if (c === "quote") document.execCommand("formatBlock", false, "blockquote");
+    if (c === "p") { document.execCommand("formatBlock", false, "p"); document.execCommand("removeFormat"); }
+    if (c === "link") {
+      const sel = getSelection().toString().trim();
+      const url = /^https?:\/\//.test(sel) ? sel : null;
+      if (url) document.execCommand("createLink", false, url);
+      else { saveRange = getSelection().getRangeAt(0).cloneRange(); openLinkPrompt(); return; }
+    }
+    markDirty();
+  });
+  // in-page link prompt (no window.prompt in artifacts)
+  let saveRange = null;
+  function openLinkPrompt() {
+    const fmt = $("#fmt");
+    const old = fmt.innerHTML;
+    fmt.innerHTML = `<input class="field" id="linkIn" type="url" placeholder="https://…" style="width:220px;padding:5px 9px;background:var(--surface);color:var(--ink)"><button id="linkOk">Add</button>`;
+    const inp = $("#linkIn"); inp.focus();
+    const done = ok => {
+      const v = inp.value.trim();
+      fmt.innerHTML = old;
+      if (ok && v && saveRange) {
+        const s = getSelection(); s.removeAllRanges(); s.addRange(saveRange);
+        document.execCommand("createLink", false, /^https?:\/\//.test(v) ? v : "https://" + v);
+        markDirty();
+      }
+      fmt.hidden = true;
+    };
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); done(true); } if (e.key === "Escape") done(false); });
+    $("#linkOk").addEventListener("click", () => done(true));
+    fmt.removeEventListener("mousedown", stopMd);
+  }
+  function stopMd(e) { e.preventDefault(); }
+
+  // ---------- references ----------
+  const srcOf = u => { try { const h = new URL(u).hostname.replace(/^www\./, ""); if (h.includes("are.na")) return "Are.na"; if (h.includes("pinterest")) return "Pinterest"; if (h.includes("cosmos.so")) return "Cosmos"; return h; } catch { return "Link"; } };
+  function renderRefs() {
+    const refs = current.refs || [];
+    $("#refList").innerHTML = refs.length ? refs.map((r, i) => `<li>
+      <div><span class="src">${esc(srcOf(r.url))}</span><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title || r.url)}</a>${r.note ? `<small>${esc(r.note)}</small>` : ""}</div>
+      <button class="btn quiet" data-unpin="${i}" aria-label="Remove reference">✕</button></li>`).join("")
+      : `<li style="grid-template-columns:1fr;color:var(--muted);font-size:var(--step--1);border:0">Pin boards, images and readings that feed this piece. They stay with it, one tap away while you write.</li>`;
+  }
+  $("#refsBtn").addEventListener("click", () => { const o = $("#drawer").classList.toggle("open"); $("#refsBtn").setAttribute("aria-pressed", String(o)); });
+  $("#drawerClose").addEventListener("click", () => { $("#drawer").classList.remove("open"); $("#refsBtn").setAttribute("aria-pressed", "false"); });
+  $("#refForm").addEventListener("submit", e => {
+    e.preventDefault();
+    let url = $("#refUrl").value.trim(); if (!url) return;
+    if (!/^https?:\/\//.test(url)) url = "https://" + url;
+    let title = url; try { const u = new URL(url); title = (u.hostname.replace(/^www\./, "") + u.pathname).replace(/\/$/, ""); } catch {}
+    (current.refs = current.refs || []).unshift({ url, title, note: $("#refNote").value.trim() });
+    $("#refUrl").value = ""; $("#refNote").value = "";
+    renderRefs(); markDirty();
+  });
+  $("#refList").addEventListener("click", e => {
+    const u = e.target.closest("[data-unpin]"); if (!u) return;
+    current.refs.splice(+u.dataset.unpin, 1); renderRefs(); markDirty();
+  });
+
+  // ---------- poster ----------
+  const FORMATS = { A1: [594, 841], A0: [841, 1189] };   // DIN sizes in mm
+  const SNAP = 5;
+  let selId = null, editingId = null, zoom = 1, curScale = 1;
+  function newPosterData() { return { format: "A1", orient: "portrait", grid: false, items: [] }; }
+  const dimsOf = ps => { const [a, b] = FORMATS[ps.format] || FORMATS.A1; return ps.orient === "landscape" ? [b, a] : [a, b]; };
+  const pItem = id => current && current.poster ? current.poster.items.find(t => t.id === id) : null;
+  const snapMm = v => Math.round(v / SNAP) * SNAP;
+  const itemStyle = (it, s) => `left:${it.x * s}px;top:${it.y * s}px;width:${it.w * s}px;` + (it.type === "image" ? `height:${it.h * s}px;` : "");
+  function itemHtml(it, s, live) {
+    const sel = live && it.id === selId ? " sel" : "";
+    if (it.type === "image") return `<div class="pi imgitem${sel}" data-pid="${it.id}" style="${itemStyle(it, s)}">${imgTag(it, 'alt="" draggable="false"')}${live ? '<span class="ph"></span>' : ""}</div>`;
+    return `<div class="pi txtitem${sel}" data-pid="${it.id}" style="${itemStyle(it, s)}"><div class="pt ff-${it.font || "read"}" style="font-size:${it.size * s}px">${esc(it.text || "")}</div>${live ? '<span class="ph"></span>' : ""}</div>`;
+  }
+  function miniSheet(p) {
+    const [W, H] = dimsOf(p.poster); const s = 112 / W;
+    return `<div class="mini" aria-hidden="true" style="aspect-ratio:${W}/${H}"><div class="sheet" style="width:${W * s}px;height:${H * s}px">${p.poster.items.filter(t => t.type === "image" || (t.text || "").trim()).map(t => itemHtml(t, s, false)).join("")}</div></div>`;
+  }
+  function renderPoster() {
+    if (!current || current.category !== "poster") return;
+    const ps = current.poster, [W, H] = dimsOf(ps);
+    const stage = $("#stage");
+    const availW = Math.max(200, stage.clientWidth - 48);
+    const availH = Math.max(320, innerHeight - 230);
+    curScale = Math.min(availW / W, availH / H) * zoom;
+    const sh = $("#sheet");
+    sh.style.width = W * curScale + "px"; sh.style.height = H * curScale + "px";
+    sh.classList.toggle("grid", !!ps.grid); sh.style.setProperty("--g", 50 * curScale + "px");
+    sh.innerHTML = `<span class="sheet-tag">DIN ${ps.format} · ${W} × ${H} mm</span>` +
+      (ps.items.length ? "" : `<div class="sheet-hint">An empty sheet. Add a text or an image and let the thought find its place.</div>`) +
+      ps.items.map(it => itemHtml(it, curScale, true)).join("");
+    hydrateImages(sh);
+    document.querySelectorAll("[data-pf]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pf === ps.format)));
+    document.querySelectorAll("[data-po]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.po === ps.orient)));
+    $("#gridBtn").setAttribute("aria-pressed", String(!!ps.grid));
+    $("#zVal").textContent = zoom === 1 ? "Fit" : Math.round(zoom * 100) + "%";
+    updateSelGrp();
+  }
+  function updateSelGrp() {
+    const it = pItem(selId);
+    $("#selGrp").hidden = !it;
+    if (!it) return;
+    $("#selGrp .txtonly").hidden = it.type !== "text";
+    document.querySelectorAll("[data-pff]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pff === (it.font || "read"))));
+  }
+  function select(id) {
+    selId = id;
+    document.querySelectorAll("#sheet .pi").forEach(el => el.classList.toggle("sel", el.dataset.pid === id));
+    updateSelGrp();
+  }
+  function applyItem(el, it) {
+    el.style.cssText = itemStyle(it, curScale);
+    const pt = el.querySelector(".pt"); if (pt) pt.style.fontSize = it.size * curScale + "px";
+  }
+  function startEdit(id) {
+    const el = $(`#sheet [data-pid="${id}"]`); if (!el) return;
+    editingId = id; select(id);
+    el.classList.add("editing");
+    const pt = el.querySelector(".pt"); pt.contentEditable = "true";
+    placeCaret(pt);
+  }
+  function endEdit() {
+    const id = editingId; if (!id) return;
+    editingId = null;
+    const el = $(`#sheet [data-pid="${id}"]`), it = pItem(id);
+    if (el && it) {
+      const pt = el.querySelector(".pt"); it.text = pt.innerText.replace(/\n$/, "");
+      pt.contentEditable = "false"; el.classList.remove("editing");
+      if (!it.text.trim()) { current.poster.items = current.poster.items.filter(t => t !== it); selId = null; renderPoster(); }
+    }
+    markDirty();
+  }
+  $("#stage").addEventListener("pointerdown", e => {
+    const el = e.target.closest(".pi");
+    if (!el) { if (editingId) endEdit(); select(null); return; }
+    const id = el.dataset.pid, it = pItem(id); if (!it) return;
+    if (editingId === id && !e.target.classList.contains("ph")) return;   // typing inside the text
+    if (editingId) endEdit();
+    e.preventDefault();
+    const wasSel = selId === id;
+    select(id);
+    const resize = e.target.classList.contains("ph");
+    const [W, H] = dimsOf(current.poster);
+    const sx = e.clientX, sy = e.clientY, o = { x: it.x, y: it.y, w: it.w };
+    let moved = false;
+    el.setPointerCapture(e.pointerId);
+    const mv = ev => {
+      const dx = (ev.clientX - sx) / curScale, dy = (ev.clientY - sy) / curScale;
+      if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 2) moved = true;
+      if (!moved) return;
+      if (resize) {
+        it.w = Math.max(20, snapMm(o.w + dx));
+        if (it.type === "image") it.h = Math.round(it.w / (it.aspect || 1));
+      } else {
+        it.x = Math.min(Math.max(snapMm(o.x + dx), -it.w + 20), W - 20);
+        it.y = Math.min(Math.max(snapMm(o.y + dy), -20), H - 20);
+      }
+      applyItem(el, it);
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", mv); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      if (moved) markDirty();
+      else if (wasSel && !resize && it.type === "text") startEdit(id);   // tap a selected text to write in it
+    };
+    el.addEventListener("pointermove", mv); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  });
+  $("#stage").addEventListener("dblclick", e => { const el = e.target.closest(".pi.txtitem"); if (el && editingId !== el.dataset.pid) startEdit(el.dataset.pid); });
+  $("#stage").addEventListener("keydown", e => { if (e.key === "Escape" && editingId) { e.stopPropagation(); endEdit(); } });
+
+  function addItem(it) { current.poster.items.push(it); selId = it.id; renderPoster(); markDirty(); }
+  $("#addText").addEventListener("click", () => {
+    if (editingId) endEdit();
+    const [W, H] = dimsOf(current.poster), n = current.poster.items.length;
+    const it = { id: uid(), type: "text", x: snapMm(W * .1), y: snapMm(H * .08 + (n % 8) * 40), w: snapMm(W * .6), size: n ? 9 : 22, font: n ? "read" : "display", text: "" };
+    addItem(it); startEdit(it.id);
+  });
+  $("#addImg").addEventListener("change", async e => {
+    const file = e.target.files[0]; e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast("That file isn't an image."); return; }
+    if (editingId) endEdit();
+    const p = current;
+    try {
+      const r = await localAssets.add(file);
+      if (current !== p) return;
+      const aspect = r.aspect || 1;
+      const [W, H] = dimsOf(p.poster);
+      const w = snapMm(W * .5), h = Math.round(w / aspect);
+      addItem({ id: uid(), type: "image", assetId: r.id, ext: r.ext, aspect, x: snapMm((W - w) / 2), y: snapMm(Math.max(20, (H - h) / 2)), w, h });
+    } catch (err) {
+      toast(err && err.name === "QuotaExceededError" ? "This device is out of space for images." : "That image couldn't be read. Try a JPG or PNG.");
+    }
+  });
+  $("#gridBtn").addEventListener("click", () => { current.poster.grid = !current.poster.grid; renderPoster(); markDirty(); });
+  document.querySelectorAll("[data-pf],[data-po]").forEach(b => b.addEventListener("click", () => {
+    if (editingId) endEdit();
+    const ps = current.poster, [W0, H0] = dimsOf(ps);
+    const fmt = b.dataset.pf || ps.format, ori = b.dataset.po || ps.orient;
+    if (fmt === ps.format && ori === ps.orient) return;
+    const k = fmt !== ps.format ? FORMATS[fmt][0] / FORMATS[ps.format][0] : 1;   // A1↔A0 scales everything by √2
+    ps.format = fmt; ps.orient = ori;
+    const [W1, H1] = dimsOf(ps);
+    ps.items.forEach(it => {
+      if (k !== 1) { it.x *= k; it.y *= k; it.w *= k; if (it.h) it.h *= k; if (it.size) it.size *= k; }
+      else { it.x *= W1 / W0; it.y *= H1 / H0; if (it.w > W1 - 20) { const f = (W1 - 20) / it.w; it.w *= f; if (it.h) it.h *= f; } }
+      ["x", "y", "w", "h"].forEach(key => { if (it[key] != null) it[key] = Math.round(it[key]); });
+      if (it.size) it.size = Math.round(it.size * 2) / 2;
+    });
+    renderPoster(); markDirty();
+  }));
+  $("#selGrp").addEventListener("click", e => {
+    const it = pItem(selId); if (!it) return;
+    const b = e.target.closest("[data-ps],[data-pff]"); if (!b) return;
+    if (editingId) endEdit();
+    if (!pItem(selId)) return;
+    const items = current.poster.items;
+    switch (b.dataset.ps) {
+      case "smaller": it.size = Math.max(2, Math.round(it.size / 1.2 * 2) / 2); break;
+      case "larger": it.size = Math.min(200, Math.round(it.size * 1.2 * 2) / 2); break;
+      case "front": items.splice(items.indexOf(it), 1); items.push(it); break;
+      case "delete": items.splice(items.indexOf(it), 1); selId = null; break;
+    }
+    if (b.dataset.pff) it.font = b.dataset.pff;
+    renderPoster(); markDirty();
+  });
+  $("#zIn").addEventListener("click", () => { zoom = Math.min(3, zoom * 1.25); renderPoster(); });
+  $("#zOut").addEventListener("click", () => { zoom = Math.max(.4, zoom / 1.25); renderPoster(); });
+  $("#zVal").addEventListener("click", () => { zoom = 1; renderPoster(); });
+  let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (current && current.category === "poster" && !editingId) renderPoster(); }, 150); });
+  document.addEventListener("keydown", e => {
+    if (!current || current.category !== "poster" || !selId || editingId) return;
+    if (e.target.closest && e.target.closest("input,select,textarea,[contenteditable='true']")) return;
+    const it = pItem(selId); if (!it) return;
+    const step = e.shiftKey ? 10 : 1;
+    const mv = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+    if (mv) { e.preventDefault(); it.x += mv[0]; it.y += mv[1]; const el = $(`#sheet [data-pid="${it.id}"]`); el && applyItem(el, it); markDirty(); }
+    else if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); current.poster.items = current.poster.items.filter(t => t !== it); selId = null; renderPoster(); markDirty(); }
+    else if (e.key === "Enter" && it.type === "text") { e.preventDefault(); startEdit(it.id); }
+  });
+
+  async function posterBlob(p) {
+    const ps = p.poster, [W, H] = dimsOf(ps), k = 2;            // 2 px per mm
+    const cv = document.createElement("canvas"); cv.width = W * k; cv.height = H * k;
+    const ctx = cv.getContext("2d");
+    const css = getComputedStyle(document.documentElement);
+    ctx.fillStyle = css.getPropertyValue("--sheet").trim() || "#fdfdfb"; ctx.fillRect(0, 0, cv.width, cv.height);
+    try { await document.fonts.ready; } catch {}
+    for (const it of ps.items) {
+      if (it.type === "image") {
+        const im = new Image();
+        try { im.src = await assetURL(it.assetId, it.ext); await im.decode(); } catch { continue; }
+        const bw = it.w * k, bh = it.h * k, ia = im.naturalWidth / im.naturalHeight, ba = bw / bh;
+        let sw = im.naturalWidth, sh = im.naturalHeight, sx = 0, sy = 0;
+        if (ia > ba) { sw = sh * ba; sx = (im.naturalWidth - sw) / 2; } else { sh = sw / ba; sy = (im.naturalHeight - sh) / 2; }
+        ctx.drawImage(im, sx, sy, sw, sh, it.x * k, it.y * k, bw, bh);
+      } else if ((it.text || "").trim()) {
+        const fam = css.getPropertyValue({ read: "--f-read", display: "--f-display", ui: "--f-ui" }[it.font || "read"]).trim();
+        const fs = it.size * k, lh = fs * 1.15, maxW = it.w * k;
+        ctx.font = `${it.font === "ui" ? 500 : 400} ${fs}px ${fam}`; ctx.fillStyle = css.getPropertyValue("--sheet-ink").trim() || "#1b201d"; ctx.textBaseline = "top";
+        let y = it.y * k + (lh - fs) / 2;
+        for (const para of it.text.split("\n")) {
+          let line = "";
+          for (const word of para.split(/(\s+)/)) {
+            const test = line + word;
+            if (line && ctx.measureText(test).width > maxW && word.trim()) { ctx.fillText(line.trimEnd(), it.x * k, y); y += lh; line = word.trimStart(); }
+            else line = test;
+          }
+          ctx.fillText(line, it.x * k, y); y += lh;
+        }
+      }
+    }
+    return new Promise((res, rej) => { try { cv.toBlob(b => b ? res(b) : rej(new Error("empty")), "image/png"); } catch (e) { rej(e); } });
+  }
+  $("#dlPng").addEventListener("click", async () => {
+    $("#morePop").hidden = true;
+    if (editingId) endEdit();
+    flush();
+    toast("Preparing the image…");
+    try {
+      const blob = await posterBlob(current);
+      $("#toast").hidden = true;
+      await saveFile(slug(current.title) + "-" + current.poster.format.toLowerCase() + ".png", blob, "image/png");
+    } catch (err) { toast("The image couldn't be made. Try again in a moment."); }
+  });
+
+  // ---------- export ----------
+  function toMarkdown(p) {
+    const walk = node => {
+      let out = "";
+      node.childNodes.forEach(n => {
+        if (n.nodeType === 3) { out += n.textContent; return; }
+        if (n.nodeType !== 1) return;
+        const inner = walk(n);
+        switch (n.tagName) {
+          case "P": case "DIV": out += inner.trim() + "\n\n"; break;
+          case "H2": case "H3": out += "## " + inner.trim() + "\n\n"; break;
+          case "BLOCKQUOTE": out += inner.trim().split("\n").filter(Boolean).map(l => "> " + l).join("\n") + "\n\n"; break;
+          case "B": case "STRONG": out += inner.trim() ? `**${inner}**` : inner; break;
+          case "I": case "EM": out += inner.trim() ? `*${inner}*` : inner; break;
+          case "A": out += `[${inner}](${n.getAttribute("href")})`; break;
+          case "BR": out += "\n"; break;
+          default: out += inner;
+        }
+      });
+      return out;
+    };
+    let md = `---\ntitle: "${(p.title || "Untitled").replace(/"/g, '\\"')}"\ncategory: ${catById(p.category).name}\nstatus: ${STATUS[p.status || "seed"]}\n---\n\n# ${p.title || "Untitled"}\n\n`;
+    if (p.standfirst) md += `*${p.standfirst}*\n\n`;
+    p.blocks.forEach(b => {
+      if (b.type === "text") { const d = document.createElement("div"); d.innerHTML = b.html || ""; md += walk(d); }
+      else if (b.type === "divider") md += "* * *\n\n";
+      else if (b.type === "image" && b.assetId) md += `![${b.caption || ""}](images/${b.assetId}.${b.ext || "jpg"})\n${b.caption ? `*${b.caption}*\n` : ""}\n`;
+    });
+    if (p.refs && p.refs.length) md += "\n---\n\nReferences\n\n" + p.refs.map(r => `- [${r.title || r.url}](${r.url})${r.note ? ": " + r.note : ""}`).join("\n") + "\n";
+    return md.replace(/\n{3,}/g, "\n\n").trim() + "\n";
+  }
+  const slug = s => (s || "untitled").toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 60) || "untitled";
+  $("#copyMd").addEventListener("click", async () => {
+    flush(); collect();
+    const md = toMarkdown(current);
+    try { await navigator.clipboard.writeText(md); toast("Markdown copied."); }
+    catch {
+      const ta = document.createElement("textarea"); ta.value = md; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); toast("Markdown copied."); } catch { toast("Copy didn't work here. Try the download instead."); }
+      ta.remove();
+    }
+    $("#morePop").hidden = true;
+  });
+  $("#dlMd").addEventListener("click", async () => {
+    flush(); collect();
+    $("#morePop").hidden = true;
+    try { await saveFile(slug(current.title) + ".md", toMarkdown(current), "text/markdown"); }
+    catch (err) { toast("The download didn't start. Copy the Markdown instead."); }
+  });
+
+  // ---------- sync & backup panel ----------
+  function ago(t) {
+    if (!t) return "";
+    const m = Math.round((Date.now() - t) / 60000);
+    if (m < 1) return "just now";
+    if (m < 60) return m + " min ago";
+    const d = new Date(t);
+    return "at " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + (Date.now() - t > 864e5 ? ", " + d.toLocaleDateString([], { day: "numeric", month: "short" }) : "");
+  }
+  function syncText() {
+    const c = store.cfg, n = store.pending();
+    switch (store.state) {
+      case "local": return ["", store.noDevice ? "Private browsing: pieces disappear when this tab closes." : "Saved on this device only. Connect GitHub to share pieces between phone and laptop."];
+      case "syncing": return ["busy", "Syncing…"];
+      case "synced": return ["ok", `Synced with GitHub ${ago(store.lastSync)}`];
+      case "idle": return ["", n ? `${n} change${n > 1 ? "s" : ""} waiting to sync` : store.lastSync ? `Synced with GitHub ${ago(store.lastSync)}` : "Connected to GitHub"];
+      case "offline": return ["warn", "Offline. Everything is saved on this device and syncs when you're back online."];
+      case "public": return ["bad", `${c ? c.repo : "The repository"} is public, so syncing is paused. Make it private on GitHub, then check again.`];
+      case "auth": return ["bad", "GitHub didn't accept the access token. It may have expired: paste a new one under Sync & backup."];
+      case "forbidden": return ["bad", "The token can't write to this repository. Give it Contents: Read and write access."];
+      case "norepo": return ["bad", `Can't reach ${c ? c.owner + "/" + c.repo : "the repository"}. Check the name, and that the token includes this repository.`];
+      default: return ["warn", "Couldn't sync just now. Your writing is safe on this device; trying again shortly."];
+    }
+  }
+  function renderSync() {
+    const [tone, text] = syncText();
+    const note = $("#storeNote");
+    note.dataset.tone = tone; note.querySelector("span").textContent = text;
+    const st = $("#setStatus");
+    st.dataset.tone = tone; st.textContent = text;
+    const conn = !!store.cfg;
+    $("#setConnect").hidden = conn; $("#setConnected").hidden = !conn;
+    if (conn) {
+      $("#ghWhere").textContent = `${store.cfg.owner}/${store.cfg.repo}, ${store.cfg.private ? "private" : "public"}`;
+      $("#pubWarn").hidden = !!store.cfg.private;
+    }
+    if (current && store.state === "synced" && !dirty && !(store.recs.get(current.id) || {}).dirty) $("#saved").textContent = "Synced";
+  }
+  function openSettings(first) {
+    $("#setIntro").hidden = !first;
+    $("#settings").classList.add("open");
+    renderSync();
+  }
+  const closeSettings = () => $("#settings").classList.remove("open");
+
+  $("#storeNote").addEventListener("click", () => openSettings(false));
+  $("#setClose").addEventListener("click", closeSettings);
+  $("#localOnly").addEventListener("click", async () => {
+    store.localOnly = true;
+    try { await idb.put("kv", true, "localOnly"); } catch {}
+    closeSettings();
+  });
+  $("#ghForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const cfg = { owner: $("#ghOwner").value.trim(), repo: $("#ghRepo").value.trim(), token: $("#ghToken").value.trim() };
+    const err = $("#ghErr"); err.hidden = true;
+    if (!cfg.owner || !cfg.repo || !cfg.token) { err.textContent = "Fill in all three fields."; err.hidden = false; return; }
+    const btn = $("#ghConnect"); btn.disabled = true; btn.textContent = "Connecting…";
+    try {
+      const c = await store.connect(cfg);
+      $("#ghToken").value = "";
+      toast(c.private ? "Connected. Syncing your pieces." : "Connected, but the repository is public. Syncing is paused.");
+    } catch (x) {
+      err.textContent = x.code === 401 ? "GitHub didn't accept that token. Copy it again; it starts with github_pat_."
+        : x.code === 404 || x.code === 403 ? `This token can't see ${cfg.owner}/${cfg.repo}. Check the spelling, and that the token has access to this repository.`
+        : x.code === 0 ? "No connection to GitHub. Check that you're online."
+        : "GitHub refused the connection" + (x.detail ? `: ${x.detail}` : ".");
+      err.hidden = false;
+    } finally { btn.disabled = false; btn.textContent = "Connect"; }
+  });
+  $("#syncNow").addEventListener("click", () => { flush(); store.sync(); });
+  $("#ghDisconnect").addEventListener("click", async () => { await store.disconnect(); toast("Disconnected. Your pieces stay on this device."); });
+  $("#recheck").addEventListener("click", async () => {
+    try { await store.recheck(); toast(store.cfg.private ? "It's private now. Syncing." : "GitHub still lists it as public."); }
+    catch { toast("Couldn't reach GitHub. Try again in a moment."); }
+  });
+  $("#exportAll").addEventListener("click", async () => {
+    flush();
+    toast("Preparing the backup…");
+    try {
+      const json = await exportAll();
+      $("#toast").hidden = true;
+      await saveFile(`lichtung-backup-${new Date().toISOString().slice(0, 10)}.json`, json, "application/json");
+    } catch { toast("The backup couldn't be made. Try again."); }
+  });
+  $("#importFile").addEventListener("change", async e => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f) return;
+    toast("Importing…");
+    try {
+      const r = await importAll(await f.text());
+      renderLibrary();
+      const parts = [`${r.added} new piece${r.added === 1 ? "" : "s"}`];
+      if (r.updated) parts.push(`${r.updated} updated`);
+      if (r.images) parts.push(`${r.images} image${r.images === 1 ? "" : "s"}`);
+      toast("Imported " + parts.join(", ") + ".");
+      store.schedule(1000);
+    } catch { toast("That file isn't a Lichtung export."); }
+  });
+
+  // ---------- boot ----------
+  renderProv(false);
+  store.init(() => { if (!current) renderLibrary(); else renderTabs(); });
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeSettings();
+    if (e.key === "Escape" && current) {
+      if (!$("#drawer").classList.contains("open") && document.body.classList.contains("focus")) { document.body.classList.remove("focus"); $("#focusBtn").setAttribute("aria-pressed", "false"); }
+      $("#drawer").classList.remove("open"); $("#refsBtn").setAttribute("aria-pressed", "false");
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s" && current) { e.preventDefault(); dirty = true; flush(); store.schedule(300); }
+  });
+})();
+</script>
+</body>
+</html>
